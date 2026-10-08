@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>roomlab — vault room viewer</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #08090c;
+               font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #cfd2da; }
+  canvas { display: block; }
+  #hud { position: fixed; top: 10px; left: 10px; background: #12141ad9; border: 1px solid #262a36;
+         border-radius: 8px; padding: 10px 12px; min-width: 232px; backdrop-filter: blur(6px); }
+  #hud h1 { margin: 0 0 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #8b90a0; font-weight: 600; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 5px 0; }
+  .row label { color: #8b90a0; }
+  input[type=range] { width: 108px; }
+  select { background: #1a1d27; color: #cfd2da; border: 1px solid #2c313e; border-radius: 5px;
+           padding: 3px 6px; font: inherit; max-width: 132px; }
+  #stats { margin-top: 8px; padding-top: 8px; border-top: 1px solid #262a36; color: #767b8b; white-space: pre; font-size: 12px; }
+  #hint { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center;
+          background: #12141ae8; border: 1px solid #2c313e; border-radius: 10px; padding: 18px 26px; }
+  #hint b { color: #e6e8ee; display: block; margin-bottom: 8px; font-size: 15px; }
+  #hint span { color: #868c9c; }
+  #hint.hidden { display: none; }
+  #cross { position: fixed; left: 50%; top: 50%; width: 2px; height: 2px; margin: -1px 0 0 -1px;
+           background: #ffffff88; pointer-events: none; }
+  kbd { background: #232733; border: 1px solid #333949; border-radius: 4px; padding: 1px 5px; color: #cfd2da; }
+</style>
+</head>
+<body>
+<div id="cross"></div>
+<div id="hud">
+  <h1>roomlab</h1>
+  <div class="row"><label for="room">room</label><select id="room"></select></div>
+  <div class="row"><label for="ambient">ambient</label><input id="ambient" type="range" min="0" max="60" value="14"></div>
+  <div class="row"><label for="speed">speed</label><input id="speed" type="range" min="1" max="60" value="12"></div>
+  <div class="row"><label for="shell">hide shell</label><input id="shell" type="checkbox" checked></div>
+  <div id="stats">loading…</div>
+</div>
+<div id="hint"><b>click to enter the room</b>
+  <span><kbd>WASD</kbd> move · <kbd>space</kbd>/<kbd>shift</kbd> up·down<br>
+  mouse to look · <kbd>esc</kbd> to release · scroll to change speed</span></div>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
+const FACE_OFF = [[0,1,0],[0,-1,0],[0,0,-1],[0,0,1],[1,0,0],[-1,0,0]];   // up down north south east west
+const FACE_SHADE = [1.0, 0.48, 0.76, 0.76, 0.62, 0.62];
+// per-face corner offsets, counter-clockwise seen from outside
+const FACE_VERTS = [
+  [[0,1,0],[0,1,1],[1,1,1],[1,1,0]],   // up
+  [[0,0,1],[0,0,0],[1,0,0],[1,0,1]],   // down
+  [[1,0,0],[0,0,0],[0,1,0],[1,1,0]],   // north (-z)
+  [[0,0,1],[1,0,1],[1,1,1],[0,1,1]],   // south (+z)
+  [[1,0,1],[1,0,0],[1,1,0],[1,1,1]],   // east  (+x)
+  [[0,0,0],[0,0,1],[0,1,1],[0,1,0]],   // west  (-x)
+];
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x07080b);
+const camera = new THREE.PerspectiveCamera(75, 1, 0.05, 600);
+const controls = new PointerLockControls(camera, renderer.domElement);
+scene.add(controls.getObject());
+
+const hint = document.getElementById('hint');
+renderer.domElement.addEventListener('click', () => controls.lock());
+
+// Chrome does not reliably repaint the mouse cursor after pointer lock is released over a
+// canvas that is still rendering every frame: the cursor is live and clickable but invisible.
+//
+// Setting `cursor: default` is not enough on its own -- if it is ALREADY `default`, assigning
+// the same value is a no-op and the browser never re-evaluates. The cursor has to actually
+// CHANGE, so this cycles through a different value first. The staggered timeouts cover Chrome
+// releasing the lock asynchronously, after the unlock event has already fired.
+function setCursor(v) {
+  document.body.style.cursor = v;
+  renderer.domElement.style.cursor = v;
+}
+function restoreCursor() {
+  setCursor('none');                      // a real change, so the next assignment is not a no-op
+  requestAnimationFrame(() => setCursor('default'));
+  for (const ms of [0, 60, 250]) setTimeout(() => { setCursor('progress'); setCursor('default'); }, ms);
+}
+controls.addEventListener('lock', () => { hint.classList.add('hidden'); setCursor('none'); });
+controls.addEventListener('unlock', () => { hint.classList.remove('hidden'); restoreCursor(); });
+document.addEventListener('pointerlockchange', () => {
+  if (!document.pointerLockElement) restoreCursor();
+});
+// Escape is handled by the browser, but the keyup still reaches us and is a reliable second nudge.
+addEventListener('keyup', e => { if (e.code === 'Escape') restoreCursor(); });
+setCursor('default');
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+const keys = new Set();
+addEventListener('keydown', e => keys.add(e.code));
+addEventListener('keyup', e => keys.delete(e.code));
+const speedEl = document.getElementById('speed');
+addEventListener('wheel', e => {
+  if (!controls.isLocked) return;
+  speedEl.value = Math.max(1, Math.min(60, +speedEl.value - Math.sign(e.deltaY) * 2));
+}, { passive: true });
+
+let group = null, mats = [];
+const ambientEl = document.getElementById('ambient');
+ambientEl.addEventListener('input', () => {
+  const a = +ambientEl.value / 100;
+  for (const m of mats) { m.uniforms.uAmbient.value = a; }
+});
+
+function b64(s) {
+  const bin = atob(s), out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+// Baked light lives in vertex colors; a tiny custom shader adds the ambient floor so the
+// slider does not require rebuilding geometry.
+function makeMaterial(tex, transparent) {
+  const m = new THREE.ShaderMaterial({
+    uniforms: { uMap: { value: tex }, uAmbient: { value: +ambientEl.value / 100 } },
+    vertexShader: `
+      attribute vec3 color; varying vec2 vUv; varying vec3 vCol;
+      void main(){ vUv = uv; vCol = color;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `
+      uniform sampler2D uMap; uniform float uAmbient; varying vec2 vUv; varying vec3 vCol;
+      void main(){ vec4 t = texture2D(uMap, vUv);
+        if (t.a < 0.06) discard;
+        gl_FragColor = vec4(t.rgb * max(vCol, vec3(uAmbient)), t.a); }`,
+    transparent, depthWrite: !transparent, side: THREE.FrontSide,
+  });
+  return m;
+}
+
+async function loadRoom(name) {
+  const stats = document.getElementById('stats');
+  stats.textContent = 'loading ' + name + '…';
+  const bust = Date.now();
+  const room = await (await fetch(`room_${name}.json?v=${bust}`, {cache: 'no-store'})).json();
+  // ?v= on the texture too: TextureLoader has no cache option, and python's http.server
+  // sends no Cache-Control, so the browser will happily reuse a stale atlas.
+  const tex = await new THREE.TextureLoader().loadAsync(`${room.atlas.file || 'atlas.png'}?v=${bust}`);
+  tex.magFilter = THREE.NearestFilter;
+  tex.minFilter = THREE.NearestFilter;
+  tex.generateMipmaps = false;
+  tex.colorSpace = THREE.SRGBColorSpace;
+
+  const [SX, SY, SZ] = room.size;
+  const states = new Uint16Array(b64(room.states).buffer);
+  const light = b64(room.light);
+  const pal = room.palette;
+  const { cols, rows } = room.atlas;
+  const idx = (x, y, z) => (y * SZ + z) * SX + x;
+  const inside = (x, y, z) => x >= 0 && x < SX && y >= 0 && y < SY && z >= 0 && z < SZ;
+  const hideShell = document.getElementById('shell').checked;
+
+  const buf = { opaque: mk(), trans: mk() };
+  function mk() { return { pos: [], uv: [], col: [], n: 0 }; }
+
+  const UPAD = 0.002;
+  for (let y = 0; y < SY; y++) for (let z = 0; z < SZ; z++) for (let x = 0; x < SX; x++) {
+    const i = idx(x, y, z);
+    const p = pal[states[i]];
+    if (p.invisible) continue;
+    const target = p.transparent ? buf.trans : buf.opaque;
+    for (let f = 0; f < 6; f++) {
+      const [dx, dy, dz] = FACE_OFF[f];
+      const nx = x + dx, ny = y + dy, nz = z + dz;
+      // Out of bounds counts as solid: vault rooms sit inside bedrock, so the outer hull is
+      // never visible in game and drawing it would just box the camera in.
+      if (!inside(nx, ny, nz)) { if (hideShell) continue; }
+      let lit = 0;
+      if (inside(nx, ny, nz)) {
+        const j = idx(nx, ny, nz);
+        const q = pal[states[j]];
+        const open = q.invisible || (q.transparent && states[j] !== states[i]);
+        if (!open) continue;
+        lit = light[j] / 15;
+      }
+      const tile = p.faces[f];
+      if (tile < 0) continue;
+      const tu = (tile % cols) / cols, tv = Math.floor(tile / cols) / rows;
+      const du = 1 / cols, dv = 1 / rows;
+      const b = FACE_SHADE[f] * (0.06 + 0.94 * lit);
+      const vs = FACE_VERTS[f];
+      const uvq = [[0, 0], [1, 0], [1, 1], [0, 1]];
+      const base = target.n;
+      for (let k = 0; k < 4; k++) {
+        target.pos.push(x + vs[k][0], y + vs[k][1], z + vs[k][2]);
+        target.uv.push(tu + du * (UPAD + uvq[k][0] * (1 - 2 * UPAD)),
+                       1 - (tv + dv * (UPAD + (1 - uvq[k][1]) * (1 - 2 * UPAD))));
+        target.col.push(b, b, b);
+      }
+      target.idx = target.idx || [];
+      target.idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+      target.n += 4;
+    }
+  }
+
+  if (group) { scene.remove(group); group.traverse(o => o.geometry && o.geometry.dispose()); }
+  group = new THREE.Group();
+  mats = [];
+  let faces = 0;
+  for (const [key, t] of Object.entries(buf)) {
+    if (!t.n) continue;
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(t.pos, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(t.uv, 2));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(t.col, 3));
+    g.setIndex(t.idx);
+    g.computeBoundingSphere();
+    const m = makeMaterial(tex, key === 'trans');
+    mats.push(m);
+    group.add(new THREE.Mesh(g, m));
+    faces += t.n / 4;
+  }
+  scene.add(group);
+  window.__rl = { scene, group, mats, camera, controls, room, states, light, pal };
+
+  // spawn: first air cell with headroom, searched outward from the room centre at gate height
+  const cx = SX >> 1, cz = SZ >> 1;
+  let spawn = [cx + 0.5, 24, cz + 0.5];
+  outer: for (let r = 0; r < SX; r++) for (let dy = 0; dy < 20; dy++)
+    for (const sgn of [1, -1]) {
+      const y = 22 + sgn * dy;
+      for (let a = -r; a <= r; a++) for (const [px, pz] of [[cx + a, cz + r], [cx + a, cz - r], [cx + r, cz + a], [cx - r, cz + a]]) {
+        if (!inside(px, y, pz) || !inside(px, y + 1, pz)) continue;
+        if (pal[states[idx(px, y, pz)]].invisible && pal[states[idx(px, y + 1, pz)]].invisible) {
+          spawn = [px + 0.5, y + 1.6, pz + 0.5]; break outer;
+        }
+      }
+    }
+  controls.getObject().position.set(...spawn);
+
+  stats.textContent =
+    `${SX}x${SY}x${SZ}  ${faces.toLocaleString()} faces\n` +
+    `${pal.length} block states, ${room.atlas.tiles ?? cols * rows} atlas tiles\n` +
+    `spawn ${spawn.map(v => v.toFixed(0)).join(', ')}\n` +
+    `built ${room.built || 'unknown'}`;
+  return room;
+}
+
+const sel = document.getElementById('room');
+sel.addEventListener('change', () => loadRoom(sel.value));
+document.getElementById('shell').addEventListener('change', () => loadRoom(sel.value));
+
+const rooms = await (await fetch(`rooms.json?v=${Date.now()}`, {cache: 'no-store'})).json();
+for (const r of rooms) {
+  const o = document.createElement('option'); o.value = o.textContent = r; sel.appendChild(o);
+}
+await loadRoom(rooms[0]);
+
+const vel = new THREE.Vector3();
+let last = performance.now();
+function tick(now) {
+  const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (controls.isLocked) {
+    const s = +speedEl.value * dt;
+    vel.set(0, 0, 0);
+    if (keys.has('KeyW')) vel.z += 1;
+    if (keys.has('KeyS')) vel.z -= 1;
+    if (keys.has('KeyD')) vel.x += 1;
+    if (keys.has('KeyA')) vel.x -= 1;
+    if (vel.lengthSq()) {
+      vel.normalize();
+      controls.moveForward(vel.z * s);
+      controls.moveRight(vel.x * s);
+    }
+    if (keys.has('Space')) controls.getObject().position.y += s;
+    if (keys.has('ShiftLeft') || keys.has('ShiftRight')) controls.getObject().position.y -= s;
+  }
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

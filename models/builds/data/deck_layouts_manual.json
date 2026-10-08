@@ -1,0 +1,53 @@
+{
+ "_note": "Layouts supplied by the user from the DeckFAST web app; model/deck.py reproduces their NDM exactly.",
+ "decks": {
+  "The Mystery Deck|construction v2": {
+   "deck": "The Mystery Deck",
+   "key": "mystery",
+   "config": "user layout, Greater Construction (5 slots)",
+   "ndm_deckfast": 10936.88,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "core_slots": 1,
+   "grid": [
+    ">RR>R<>R<",
+    " ^^ ^v   ",
+    ">R a X<R ",
+    " ^v X^   ",
+    ">RR<^>R< ",
+    "  ^      "
+   ]
+  },
+  "The Anvil Deck|custom midgame": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "user midgame layout (2 of each greed card, reduced cores)",
+   "ndm_deckfast": 1735.65,
+   "cores": [
+    "pure",
+    "foil",
+    "color"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 3,
+   "core_values": {
+    "pure_scale": 0.05,
+    "foil": 2.2,
+    "color": 1.75
+   },
+   "grid": [
+    "R>R<R>R<R",
+    "  ^SvS^  ",
+    "   SSv   ",
+    " RRRRRRR "
+   ]
+  }
+ }
+}

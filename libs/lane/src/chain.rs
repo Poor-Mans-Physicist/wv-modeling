@@ -1,0 +1,301 @@
+//! Port of `com.routerunner.solver.ChainModel`: breaking one chest clears up to `limit` chests,
+//! each within `range` (Chebyshev) of a cleared one, FIFO BFS, nearest-first by Manhattan distance
+//! with the neighbour-scan order as the tiebreak. At range 1 (Vein Miner) it also labels the
+//! static 26-connected components the candidate pre-filter scores by.
+
+use crate::grid::P;
+
+/// A spatial hash over the chest list, flattened: bucket (bx,by,bz) holds chest indices in
+/// ascending index order, exactly as Java's `computeIfAbsent(...).add(i)` leaves them.
+pub struct Buckets {
+    size: i32,
+    ox: i32,
+    oy: i32,
+    oz: i32,
+    nx: i32,
+    ny: i32,
+    nz: i32,
+    start: Vec<u32>,
+    items: Vec<u32>,
+}
+
+#[inline]
+pub fn floor_div(a: i32, b: i32) -> i32 {
+    let mut q = a / b;
+    if (a % b != 0) && ((a < 0) != (b < 0)) {
+        q -= 1;
+    }
+    q
+}
+
+impl Buckets {
+    /// `trunc_insert` mirrors `LanePlanner`'s constructor, which buckets chests with Java's
+    /// truncating `/` while `reach` looks them up with `Math.floorDiv` (identical for the
+    /// non-negative room-local coordinates the planner ever sees).
+    pub fn build(pts: &[P], size: i32, trunc_insert: bool) -> Buckets {
+        let div = |v: i32| if trunc_insert { v / size } else { floor_div(v, size) };
+        let (mut lox, mut loy, mut loz) = (i32::MAX, i32::MAX, i32::MAX);
+        let (mut hix, mut hiy, mut hiz) = (i32::MIN, i32::MIN, i32::MIN);
+        for p in pts {
+            lox = lox.min(div(p.x));
+            loy = loy.min(div(p.y));
+            loz = loz.min(div(p.z));
+            hix = hix.max(div(p.x));
+            hiy = hiy.max(div(p.y));
+            hiz = hiz.max(div(p.z));
+        }
+        if pts.is_empty() {
+            lox = 0;
+            loy = 0;
+            loz = 0;
+            hix = -1;
+            hiy = -1;
+            hiz = -1;
+        }
+        let nx = (hix - lox + 1).max(0);
+        let ny = (hiy - loy + 1).max(0);
+        let nz = (hiz - loz + 1).max(0);
+        let n = (nx * ny * nz).max(0) as usize;
+        let mut count = vec![0u32; n + 1];
+        let cell = |p: &P| -> usize {
+            (((div(p.x) - lox) * ny + (div(p.y) - loy)) * nz + (div(p.z) - loz)) as usize
+        };
+        for p in pts {
+            count[cell(p)] += 1;
+        }
+        let mut start = vec![0u32; n + 1];
+        let mut acc = 0u32;
+        for i in 0..n {
+            start[i] = acc;
+            acc += count[i];
+        }
+        start[n] = acc;
+        let mut fill = start.clone();
+        let mut items = vec![0u32; pts.len()];
+        for (i, p) in pts.iter().enumerate() {
+            let c = cell(p);
+            items[fill[c] as usize] = i as u32;
+            fill[c] += 1;
+        }
+        Buckets { size, ox: lox, oy: loy, oz: loz, nx, ny, nz, start, items }
+    }
+
+    #[inline]
+    pub fn coord(&self, v: i32) -> i32 {
+        floor_div(v, self.size)
+    }
+
+    /// Chest indices in bucket (bx,by,bz), ascending; empty when the bucket is out of range.
+    #[inline]
+    pub fn at(&self, bx: i32, by: i32, bz: i32) -> &[u32] {
+        let (ix, iy, iz) = (bx - self.ox, by - self.oy, bz - self.oz);
+        if ix < 0 || iy < 0 || iz < 0 || ix >= self.nx || iy >= self.ny || iz >= self.nz {
+            return &[];
+        }
+        let c = ((ix * self.ny + iy) * self.nz + iz) as usize;
+        &self.items[self.start[c] as usize..self.start[c + 1] as usize]
+    }
+}
+
+pub struct ChainModel {
+    pub range: i32,
+    pub limit: usize,
+    pub bucket: i32,
+    pts: Vec<P>,
+    buckets: Buckets,
+    /// Range 1 only: component root (lowest chest index) per chest, and component size per root.
+    /// Empty for chain ranges. Exact for live chests while every trigger clears its whole live
+    /// component, i.e. while no component is larger than `limit`.
+    pub comp: Vec<u32>,
+    pub comp_size: Vec<u32>,
+    /// Largest component, 0 for chain ranges.
+    pub comp_max: u32,
+    /// Per chest: 0 for an ordinary target, or the value in chests of a solo target (an enigma chest),
+    /// which the miner never chains to or from. Empty when the room has none.
+    solo: Vec<i32>,
+}
+
+/// Stamped scratch for `clear_from`'s membership set.
+pub struct ChainScratch {
+    gen: u32,
+    stamp: Vec<u32>,
+    queue: Vec<u32>,
+    cand: Vec<u32>,
+}
+
+impl ChainScratch {
+    pub fn new(n: usize) -> ChainScratch {
+        ChainScratch { gen: 0, stamp: vec![0; n], queue: Vec::new(), cand: Vec::new() }
+    }
+}
+
+impl ChainModel {
+    pub fn new(range: i32, limit: i32, pts: &[P]) -> ChainModel {
+        ChainModel::new_solo(range, limit, pts, Vec::new())
+    }
+
+    /// A chain model where `solo[i] > 0` marks chest i as a solo target worth that many chests.
+    pub fn new_solo(range: i32, limit: i32, pts: &[P], solo: Vec<i32>) -> ChainModel {
+        let range = range.max(0);
+        let limit = limit.max(1) as usize;
+        let bucket = (range + 1).max(1);
+        let mut m = ChainModel {
+            range,
+            limit,
+            bucket,
+            pts: pts.to_vec(),
+            buckets: Buckets::build(pts, bucket, false),
+            comp: Vec::new(),
+            comp_size: Vec::new(),
+            comp_max: 0,
+            solo,
+        };
+        if range <= 1 && limit > 1 {
+            m.label_components();
+        }
+        m
+    }
+
+    /// Flood-fill the chests into 26-connected components (the vein rule), rooted at their lowest index.
+    fn label_components(&mut self) {
+        let n = self.pts.len();
+        let all = vec![true; n];
+        let mut comp = vec![u32::MAX; n];
+        let mut size = vec![0u32; n];
+        let mut stack: Vec<u32> = Vec::new();
+        let mut nb: Vec<u32> = Vec::new();
+        let mut max = 0u32;
+        for s0 in 0..n {
+            if comp[s0] != u32::MAX {
+                continue;
+            }
+            comp[s0] = s0 as u32;
+            stack.push(s0 as u32);
+            let mut k = 0u32;
+            while let Some(h) = stack.pop() {
+                k += 1;
+                self.neighbors(h, &all, &mut nb);
+                for &j in nb.iter() {
+                    if comp[j as usize] == u32::MAX {
+                        comp[j as usize] = s0 as u32;
+                        stack.push(j);
+                    }
+                }
+            }
+            size[s0] = k;
+            max = max.max(k);
+        }
+        self.comp = comp;
+        self.comp_size = size;
+        self.comp_max = max;
+    }
+
+    /// Pre-filter stamp key and value of live chest `i`: the chest itself, or at range 1 its whole
+    /// component (capped at `limit`, what one trigger can take), counted once per component.
+    #[inline]
+    pub fn pre_key(&self, i: usize) -> (usize, i32) {
+        if self.is_solo(i) {
+            return (i, self.solo[i]);
+        }
+        if self.comp.is_empty() {
+            (i, 1)
+        } else {
+            let c = self.comp[i] as usize;
+            (c, self.comp_size[c].min(self.limit as u32) as i32)
+        }
+    }
+
+    /// True when chest i is a solo target.
+    #[inline]
+    pub fn is_solo(&self, i: usize) -> bool {
+        !self.solo.is_empty() && self.solo[i] > 0
+    }
+
+    /// What breaking chest i is worth, in chests: 1, or a solo target's value.
+    #[inline]
+    pub fn value(&self, i: usize) -> i32 {
+        if self.is_solo(i) {
+            self.solo[i]
+        } else {
+            1
+        }
+    }
+
+    #[inline]
+    fn cheb(a: P, b: P) -> i32 {
+        (a.x - b.x).abs().max((a.y - b.y).abs().max((a.z - b.z).abs()))
+    }
+
+    #[inline]
+    fn manh(a: P, b: P) -> i32 {
+        (a.x - b.x).abs() + (a.y - b.y).abs() + (a.z - b.z).abs()
+    }
+
+    /// Live chests other than `idx` within `range` (Chebyshev), in the bucket-scan order Java
+    /// produces (dx, dy, dz nested, ascending index within a bucket).
+    pub fn neighbors(&self, idx: u32, remaining: &[bool], out: &mut Vec<u32>) {
+        out.clear();
+        if self.limit <= 1 || self.is_solo(idx as usize) {
+            return;
+        }
+        let c = self.pts[idx as usize];
+        let bx = self.buckets.coord(c.x);
+        let by = self.buckets.coord(c.y);
+        let bz = self.buckets.coord(c.z);
+        for dx in -1..=1 {
+            for dy in -1..=1 {
+                for dz in -1..=1 {
+                    for &j in self.buckets.at(bx + dx, by + dy, bz + dz) {
+                        if j != idx
+                            && remaining[j as usize]
+                            && !self.is_solo(j as usize)
+                            && Self::cheb(c, self.pts[j as usize]) <= self.range
+                        {
+                            out.push(j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// The exact set of chests one trigger at `start` removes; `remaining` is not mutated.
+    pub fn clear_from(&self, start: u32, remaining: &[bool], sc: &mut ChainScratch) -> Vec<u32> {
+        if self.limit <= 1 {
+            return vec![start];
+        }
+        sc.gen = sc.gen.wrapping_add(1);
+        let gen = sc.gen;
+        let mut trav: Vec<u32> = Vec::new();
+        sc.queue.clear();
+        sc.queue.push(start);
+        let mut head = 0usize;
+        let mut cand = std::mem::take(&mut sc.cand);
+        while head < sc.queue.len() {
+            let h = sc.queue[head];
+            head += 1;
+            self.neighbors(h, remaining, &mut cand);
+            cand.push(h);
+            let hp = self.pts[h as usize];
+            cand.sort_by_key(|&c| Self::manh(self.pts[c as usize], hp));
+            let mut capped = false;
+            for &c in cand.iter() {
+                if trav.len() >= self.limit {
+                    capped = true;
+                    break;
+                }
+                if sc.stamp[c as usize] == gen || !remaining[c as usize] {
+                    continue;
+                }
+                trav.push(c);
+                sc.stamp[c as usize] = gen;
+                sc.queue.push(c);
+            }
+            if capped {
+                break;
+            }
+        }
+        sc.cand = cand;
+        trav
+    }
+}

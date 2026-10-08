@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wolds-vaults-deck-optimizer"
+version = "0.1.0"
+description = "Optimizer that computes the best deck layouts for Wold's Vaults."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "openpyxl>=3.1",
+    "pyyaml>=6.0",
+    # Rust SA kernel — mandatory after the channel-consolidation refactor.
+    # Built locally by uv from the in-tree crate; needs a Rust toolchain.
+    "ndm_core",
+]
+
+[project.scripts]
+optimize = "optimizer:main"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["optimizer.py", "src"]
+
+[tool.uv.sources]
+ndm_core = { path = "../../libs/ndm", editable = false }
+
+[tool.uv]
+# Force a rebuild of the Rust extension whenever its sources change.
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "optimizer.py" },
+    { file = "src/**/*.py" },
+    { file = "../../libs/ndm/Cargo.toml" },
+    { file = "../../libs/ndm/Cargo.lock" },
+    { file = "../../libs/ndm/src/**/*.rs" },
+]

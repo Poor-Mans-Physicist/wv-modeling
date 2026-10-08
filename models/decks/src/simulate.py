@@ -1,0 +1,685 @@
+"""Simulation kernel: per-assignment scoring, candidate cores, SA, optimize().
+
+This module is the heart of the optimizer. It owns:
+  * ``simulate()``     — score one (assignment, cores) combination
+  * ``candidate_cores()`` — enumerate viable core sets per (class, deck)
+  * ``sa_optimize()``  — simulated annealing (Rust + pure-Python fallback)
+  * ``optimize()``     — top-level orchestrator
+"""
+from __future__ import annotations
+
+import math
+import random
+import time
+from itertools import combinations
+from typing import Dict, FrozenSet, List, Optional, Tuple
+
+from .types import (
+    CardClass, CardType, CoreType, Position,
+    GREED_TYPES, REGULAR_TYPES, DELUXE_TYPES, TYPELESS_TYPES,
+    PLACEABLE,
+)
+from .config import (
+    ADDITIVE_CORES,
+    ALLOW_DELUXE,
+    ALLOW_VOID,
+    ALLOW_ARCHIVE,
+    ALLOW_SPARKLING,
+    Deck,
+    DELUXE_COUNTED_AS_REGULAR,
+    ENABLE_EXPERIMENTAL_EXPONENT,
+    EXPERIMENTAL_BOOST,
+    EXPERIMENTAL_EXPONENT,
+    GREED_ADDITIVE,
+    MODE,
+    MULT_COLOR,
+    MULT_DELUXE_CORE_BASE,
+    MULT_DELUXE_CORE_SCALE,
+    MULT_DELUXE_FLAT,
+    MULT_DIR_GREED_DIAG_DOWN,
+    MULT_DIR_GREED_DIAG_UP,
+    MULT_DIR_GREED_HORIZ,
+    MULT_DIR_GREED_VERT,
+    MULT_EQUILIBRIUM,
+    MULT_EVO_GREED,
+    MULT_ARCHIVE_CORE,
+    MULT_FOIL,
+    MULT_PURE_BASE,
+    MULT_PURE_SCALE,
+    MULT_STEADFAST,
+    MULT_SPARKLING,
+    MULT_SURR_GREED,
+    MULT_VOID_CORE_BASE,
+    MULT_VOID_CORE_SCALE,
+    SHINY_POSITIONAL,
+)
+
+
+def _get_placeable(card_class: CardClass) -> List[CardType]:
+    """Return the list of placeable card types for a given class and settings."""
+    if card_class == CardClass.SHINY and not SHINY_POSITIONAL:
+        result = [t for t in PLACEABLE if t not in REGULAR_TYPES]
+        return [CardType.TYPELESS] + result
+    return list(PLACEABLE)
+
+# Rust kernel is mandatory after the channel-consolidation refactor. Install
+# via `uv sync --extra rust` (or just `uv run --extra rust optimize`, which
+# triggers the build on first run via [tool.uv].cache-keys in pyproject.toml).
+import ndm_core as _ndm_core
+
+def _apply_greed(boost: Dict[Position, float], pos: Position, amount: float) -> None:
+    # New additive rule: boost is a raw sum of the greed multipliers pointing
+    # at this slot. The use-site `max(boost, 1.0)` clamp handles the no-greed
+    # case (boost stays 0 → b = 1). Multiplicative is unchanged.
+    if pos in boost:
+        if GREED_ADDITIVE: boost[pos] += amount
+        else:              boost[pos] *= amount
+
+
+def simulate(
+    deck:       Deck,
+    assignment: Dict[Position, CardType],
+    card_class: CardClass,
+    cores:      FrozenSet[CoreType],
+) -> float:
+    greed:    Dict[Position, CardType] = {}
+    regular:  Dict[Position, CardType] = {}
+    deluxe:   Dict[Position, CardType] = {}
+    typeless: Dict[Position, CardType] = {}
+    arcane:   Dict[Position, CardType] = {}
+    n_dead = 0
+
+    for p, t in assignment.items():
+        if   t in GREED_TYPES:    greed[p]    = t
+        elif t in REGULAR_TYPES:  regular[p]  = t
+        elif t in DELUXE_TYPES:   deluxe[p]   = t
+        elif t in TYPELESS_TYPES: typeless[p] = t
+        elif t == CardType.ARCANE: arcane[p]  = t
+        elif t == CardType.DEAD:  n_dead     += 1
+        # CardType.EMPTY etc. are ignored
+
+    # ARCANE counts as "filled" for row/col peer counts (so neighbors see it),
+    # but is NOT scorable (no direct NDM, no greed boost, no cores apply).
+    filled   = (frozenset(greed) | frozenset(regular) | frozenset(deluxe)
+                | frozenset(typeless) | frozenset(arcane))
+    scorable = {**regular, **deluxe, **typeless}
+
+    # n_ns for PURE: every placed card WITHOUT the Foil group — the game's
+    # NonFoilEfficiencyDeckModifier streams all deck cards and filters on
+    # !hasGroup("Foil"), so typeless/deluxe count too (audited 2026-08-01;
+    # the old greed+arcane+regular definition was a 1.x simplification).
+    # Under this reference's run-level foil rule (mirrors materialize()):
+    # scorable cards are foil on Wold's-shiny or when the FOIL core is
+    # active; greeds and arcane never carry it.
+    foil_active = CoreType.FOIL in cores
+    scorable_foiled = (
+        (MODE != "vanilla") if card_class == CardClass.SHINY else foil_active
+    )
+    if scorable_foiled:
+        n_ns = len(greed) + len(arcane)
+    else:
+        n_ns = len(greed) + len(arcane) + len(scorable)
+    n_deluxe = len(deluxe)
+
+    # All cores fold into a single core_mult. Two cores are *per-card gated*:
+    #   DELUXE_CORE — applies to regular/typeless cards, NOT to deluxe cards.
+    #   VOID_CORE   — applies to regular/typeless/deluxe, NOT to dead cards
+    #                 (dead cards have 0 base, so this only matters for symmetry).
+    # We compute a baseline (everything else), plus separate addends/factors for
+    # deluxe / void, then build per-class core_mult variants below.
+    baseline_contribs = []
+    deluxe_core_value = None  # raw multiplier value for DELUXE_CORE if present
+    void_core_value   = None  # raw multiplier value for VOID_CORE if present
+    for core in cores:
+        if   core == CoreType.PURE:
+            # n_ns now includes placed arcane cards directly.
+            baseline_contribs.append(MULT_PURE_BASE + MULT_PURE_SCALE * n_ns)
+        elif core == CoreType.EQUILIBRIUM and card_class == CardClass.SHINY:
+            # StatEfficiencyDeckModifier: 1 + roll × unique deck colors.
+            # This reference is colorless-mono, so the count is 1 whenever
+            # anything is placed (MULT_EQUILIBRIUM is the PER-COLOR roll).
+            baseline_contribs.append(
+                1.0 + MULT_EQUILIBRIUM * (1 if filled else 0)
+            )
+        elif core == CoreType.STEADFAST   and card_class == CardClass.SHINY:
+            baseline_contribs.append(MULT_STEADFAST)
+        elif core == CoreType.SPARKLING   and card_class == CardClass.SHINY:
+            baseline_contribs.append(MULT_SPARKLING)
+        elif core == CoreType.COLOR:
+            baseline_contribs.append(MULT_COLOR)
+        elif core == CoreType.FOIL:
+            baseline_contribs.append(MULT_FOIL)
+        elif core == CoreType.DELUXE_CORE:
+            deluxe_core_value = MULT_DELUXE_CORE_BASE + MULT_DELUXE_CORE_SCALE * n_deluxe
+        elif core == CoreType.VOID_CORE:
+            void_core_value   = MULT_VOID_CORE_BASE   + MULT_VOID_CORE_SCALE   * n_dead
+
+    # Archive core (live semantics, wv aa5e7b39): per-card modifier value =
+    # base ** N (N = placed ARCANE cards), aggregated ADDITIVELY with the
+    # other cores by MixinCardDeck (value += mod - 1); runic alone still
+    # multiplies the whole card. On the multiplicative (vanilla) path it
+    # folds into the per-card product like every other core. No per-card gate.
+    archive_addend = 0.0
+    archive_factor = 1.0
+    if CoreType.ARCHIVE_CORE in cores:
+        archive_factor = MULT_ARCHIVE_CORE ** len(arcane)
+        archive_addend = archive_factor - 1.0
+
+    if ADDITIVE_CORES:
+        baseline_sum  = sum(v - 1.0 for v in baseline_contribs)
+        deluxe_addend = (deluxe_core_value - 1.0) if deluxe_core_value is not None else 0.0
+        void_addend   = (void_core_value   - 1.0) if void_core_value   is not None else 0.0
+        regular_core_mult     = 1.0 + baseline_sum + deluxe_addend + void_addend + archive_addend
+        deluxe_card_core_mult = 1.0 + baseline_sum + void_addend + archive_addend
+        typeless_core_mult    = 1.0 + baseline_sum + deluxe_addend + void_addend + archive_addend
+    else:
+        baseline_prod = math.prod(baseline_contribs) if baseline_contribs else 1.0
+        deluxe_factor = deluxe_core_value if deluxe_core_value is not None else 1.0
+        void_factor   = void_core_value   if void_core_value   is not None else 1.0
+        regular_core_mult     = baseline_prod * deluxe_factor * void_factor * archive_factor
+        deluxe_card_core_mult = baseline_prod * void_factor * archive_factor
+        typeless_core_mult    = baseline_prod * deluxe_factor * void_factor * archive_factor
+
+    row_count: Dict[int, int] = {}
+    col_count: Dict[int, int] = {}
+    for r, c in filled:
+        row_count[r] = row_count.get(r, 0) + 1
+        col_count[c] = col_count.get(c, 0) + 1
+
+    # Both modes start at 1.0 so the boost is `1 + Σ greeds` (additive) or
+    # `1 × Π greeds` (multiplicative) — 0 greeds yields 1.0 in either. The
+    # legacy `max(b, 1.0)` clamp at the use site is now a no-op for additive
+    # but kept for symmetry.
+    init  = 1.0
+    boost = {p: init for p in scorable}
+
+    for g, gt in greed.items():
+        gr, gc = g
+        if   gt == CardType.DIR_GREED_UP:
+            t = (gr - 1, gc)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_VERT)
+        elif gt == CardType.DIR_GREED_DOWN:
+            t = (gr + 1, gc)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_VERT)
+        elif gt == CardType.DIR_GREED_LEFT:
+            t = (gr, gc - 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_HORIZ)
+        elif gt == CardType.DIR_GREED_RIGHT:
+            t = (gr, gc + 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_HORIZ)
+        elif gt == CardType.DIR_GREED_NE:
+            t = (gr - 1, gc + 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_DIAG_UP)
+        elif gt == CardType.DIR_GREED_NW:
+            t = (gr - 1, gc - 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_DIAG_UP)
+        elif gt == CardType.DIR_GREED_SE:
+            t = (gr + 1, gc + 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_DIAG_DOWN)
+        elif gt == CardType.DIR_GREED_SW:
+            t = (gr + 1, gc - 1)
+            if t in scorable:  _apply_greed(boost, t, MULT_DIR_GREED_DIAG_DOWN)
+        elif gt == CardType.EVO_GREED:
+            if card_class == CardClass.EVO:
+                t = (gr + 1, gc)
+                if t in regular:   # only buffs EVO regular cards; not typeless or deluxe
+                    _apply_greed(boost, t, MULT_EVO_GREED)
+        elif gt == CardType.SURR_GREED:
+            for t in deck._surr_peers[g]:
+                if t in scorable:  _apply_greed(boost, t, MULT_SURR_GREED)
+
+    ndm = 0.0
+    def _contrib(val: float) -> float:
+        return (val * EXPERIMENTAL_BOOST) ** EXPERIMENTAL_EXPONENT if ENABLE_EXPERIMENTAL_EXPONENT else val
+
+    for p, t in regular.items():
+        r, c = p
+        if   t == CardType.ROW:  pos = row_count.get(r, 0)
+        elif t == CardType.COL:  pos = col_count.get(c, 0)
+        # DIAG: same-color peers along either diagonal (NOT counting self),
+        # clamped to a minimum of 1 so a lone diag card doesn't drop to 0×.
+        elif t == CardType.DIAG: pos = max(1, sum(1 for q in deck._diag_peers[p] if q in filled))
+        else:                    pos = sum(1 for q in deck._surr_peers[p] if q in filled)
+        b    = max(boost[p], 1.0) if GREED_ADDITIVE else boost[p]
+        ndm += _contrib(pos * regular_core_mult * b)
+
+    for p in deluxe:
+        b    = max(boost[p], 1.0) if GREED_ADDITIVE else boost[p]
+        ndm += _contrib(MULT_DELUXE_FLAT * deluxe_card_core_mult * b)
+
+    for p in typeless:
+        b    = max(boost[p], 1.0) if GREED_ADDITIVE else boost[p]
+        ndm += _contrib(1.0 * typeless_core_mult * b)
+
+    return ndm
+
+
+
+def candidate_cores(card_class: CardClass, deck: Deck) -> List[FrozenSet[CoreType]]:
+    k = deck.core_slots
+
+    # ── Shared helper ─────────────────────────────────────────────────────────
+    def add_candidate(candidates, seen, combo):
+        fs = frozenset(combo)
+        if fs not in seen:
+            seen.add(fs); candidates.append(fs)
+
+    # ── SHINY ─────────────────────────────────────────────────────────────────
+    # FOIL is now just another fixed multiplier for shiny — no mutual exclusion
+    # with PURE. PURE remains the only variable core (n_ns = greed count unknown).
+    if card_class == CardClass.SHINY:
+        non_var_shiny = [CoreType.EQUILIBRIUM, CoreType.STEADFAST,
+                         CoreType.COLOR,       CoreType.FOIL]
+        if ALLOW_SPARKLING:
+            non_var_shiny.append(CoreType.SPARKLING)
+
+        def shiny_static(combo) -> float:
+            m = 1.0
+            for core in combo:
+                if core == CoreType.EQUILIBRIUM:
+                    # Ranked at its achievable best: per-color roll × all 4
+                    # colors (the SA runs colors-real with EQUILIBRIUM in
+                    # the combo and realizes this by placing the colors).
+                    m *= 1.0 + MULT_EQUILIBRIUM * 4
+                elif core == CoreType.STEADFAST:   m *= MULT_STEADFAST
+                elif core == CoreType.SPARKLING:   m *= MULT_SPARKLING
+                elif core == CoreType.COLOR:       m *= MULT_COLOR
+                elif core == CoreType.FOIL:        m *= MULT_FOIL
+            return m
+
+        def best_non_var_shiny(slots: int) -> FrozenSet[CoreType]:
+            cap    = min(slots, len(non_var_shiny))
+            best_m = 0.0
+            best_c: FrozenSet[CoreType] = frozenset()
+            for size in range(0, cap + 1):
+                for combo in (combinations(non_var_shiny, size) if size > 0 else [()]):
+                    m = shiny_static(combo)
+                    if m > best_m:
+                        best_m = m; best_c = frozenset(combo)
+            return best_c
+
+        # VOID_CORE is always variable (n_dead is unknown pre-SA), so it joins
+        # the variable pool like PURE and (when allowed) DELUXE_CORE. ARCHIVE
+        # also joins when the deck has any arcane slots (its multiplier is a
+        # function of n_arcane_placed which depends on SA choices in
+        # auto_place=OFF + void mode, and is constant otherwise).
+        var_pool = [CoreType.PURE]
+        if ALLOW_VOID:
+            var_pool.append(CoreType.VOID_CORE)
+        if ALLOW_DELUXE:
+            var_pool.append(CoreType.DELUXE_CORE)
+        if ALLOW_ARCHIVE and deck.arcane_slots:
+            var_pool.append(CoreType.ARCHIVE_CORE)
+
+        candidates: List[FrozenSet[CoreType]] = []
+        seen: set = set()
+        for size in range(0, len(var_pool) + 1):
+            for var_combo in (combinations(var_pool, size) if size > 0 else [()]):
+                var = frozenset(var_combo) if size > 0 else frozenset()
+                if len(var) > k: continue
+                filler = best_non_var_shiny(k - len(var))
+                add_candidate(candidates, seen, var | filler)
+        return candidates
+
+    # ── EVO ───────────────────────────────────────────────────────────────────
+    # Two groups based on whether FOIL is present:
+    #
+    # Group A (no FOIL): n_ns = all filled cards ≈ deck size → PURE analytically known.
+    #   Variable cores: DELUXE_CORE only.
+    #   Fixed filler: best from {PURE, COLOR}.
+    #
+    # Group B (with FOIL): n_ns = greed only → PURE is now unknown pre-SA.
+    #   Variable cores: PURE + DELUXE_CORE.
+    #   Fixed filler: best from {COLOR} only (PURE is variable, FOIL already included).
+
+    # EVO no-FOIL n_ns estimate. deck.slots already includes arcane slots under
+    # the new model (the old `+ deck.n_arcane` fudge added them as a phantom).
+    n_ns_full = len(deck.slots)
+
+    def evo_no_foil_mult(combo) -> float:
+        m = 1.0
+        for core in combo:
+            if   core == CoreType.PURE:  m *= MULT_PURE_BASE + MULT_PURE_SCALE * n_ns_full
+            elif core == CoreType.COLOR: m *= MULT_COLOR
+        return m
+
+    def best_fixed_evo_no_foil(slots: int) -> FrozenSet[CoreType]:
+        if slots <= 0:
+            return frozenset()
+        pool   = [CoreType.PURE, CoreType.COLOR]
+        cap    = min(slots, len(pool))
+        best_m = -1.0
+        best_c: FrozenSet[CoreType] = frozenset({CoreType.PURE})
+        for size in range(1, cap + 1):
+            for combo in combinations(pool, size):
+                m = evo_no_foil_mult(frozenset(combo))
+                if m > best_m:
+                    best_m = m; best_c = frozenset(combo)
+        return best_c
+
+    def best_fixed_evo_with_foil(slots: int) -> FrozenSet[CoreType]:
+        # PURE is variable here; only COLOR is analytically evaluable filler
+        if slots >= 1 and MULT_COLOR > 1.0:
+            return frozenset({CoreType.COLOR})
+        return frozenset()
+
+    deluxe_var = [CoreType.DELUXE_CORE] if ALLOW_DELUXE else []
+    # VOID_CORE joins the variable pool in both EVO groups (n_dead is unknown)
+    # — but only when the mode allows it.
+    void_var = [CoreType.VOID_CORE] if ALLOW_VOID else []
+    # ARCHIVE joins both EVO groups when allowed AND the deck has any arcane slots.
+    archive_var = [CoreType.ARCHIVE_CORE] if (ALLOW_ARCHIVE and deck.arcane_slots) else []
+    candidates = []
+    seen       = set()
+
+    # Group A: no FOIL
+    var_pool_a = list(deluxe_var) + list(void_var) + list(archive_var)
+    for size in range(0, len(var_pool_a) + 1):
+        for var_combo in (combinations(var_pool_a, size) if size > 0 else [()]):
+            var = frozenset(var_combo) if size > 0 else frozenset()
+            if len(var) > k: continue
+            filler = best_fixed_evo_no_foil(k - len(var))
+            combo = var | filler
+            add_candidate(candidates, seen, combo)
+
+    # Group B: with FOIL — PURE is variable
+    var_pool_b = [CoreType.PURE] + deluxe_var + list(void_var) + list(archive_var)
+    for size in range(0, len(var_pool_b) + 1):
+        for var_combo in (combinations(var_pool_b, size) if size > 0 else [()]):
+            var   = frozenset(var_combo) if size > 0 else frozenset()
+            total = var | {CoreType.FOIL}
+            if len(total) > k: continue
+            filler = best_fixed_evo_with_foil(k - len(total))
+            combo = total | filler
+            add_candidate(candidates, seen, combo)
+
+    return candidates
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Simulated annealing
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _precompute_best_positional(deck: Deck) -> Dict[Position, CardType]:
+    """
+    For each slot, determine which positional card type yields the highest
+    multiplier based purely on deck geometry (peer set sizes).
+    This is fixed for a given deck shape and never needs recomputing.
+    ROW/COL count all filled including self via row_count; SURR and DIAG
+    do NOT count self. For a fair comparison we use maximum possible peer
+    counts (i.e. assume all slots filled), since relative ordering is
+    geometry-only.
+    """
+    result: Dict[Position, CardType] = {}
+    for p in deck.slots:
+        r, c   = p
+        counts = {
+            CardType.ROW:  len(deck._row_peers[p]) + 1,   # +1 for self
+            CardType.COL:  len(deck._col_peers[p]) + 1,   # +1 for self
+            CardType.SURR: len(deck._surr_peers[p]),       # does not count self
+            CardType.DIAG: len(deck._diag_peers[p]),       # does not count self
+        }
+        result[p] = max(counts, key=counts.__getitem__)
+    return result
+
+# ── Peer-set converter: frozenset of (row,col) → list of slot indices ─────────
+def _peers_as_indices(
+    slot_order: Dict[Position, int],
+    peer_sets: Dict[Position, FrozenSet[Position]],
+    slots_list: List[Position],
+) -> List[List[int]]:
+    return [
+        [slot_order[q] for q in peer_sets[p]]
+        for p in slots_list
+    ]
+
+
+# ── Public sa_optimize: marshals inputs to the Rust kernel ──────────────────
+def sa_optimize(
+    deck:       Deck,
+    card_class: CardClass,
+    cores:      FrozenSet[CoreType],
+    n_iter:     int,
+    T_start:    float = 100.0,
+    T_end:      float = 0.5,
+) -> Tuple[Dict[Position, CardType], float]:
+    # ── Convert inputs for Rust ───────────────────────────────────────────────
+    slots_list = list(deck.slots)                        # consistent ordering
+    slot_order = {p: i for i, p in enumerate(slots_list)}
+
+    row_peers_idx  = _peers_as_indices(slot_order, deck._row_peers,  slots_list)
+    col_peers_idx  = _peers_as_indices(slot_order, deck._col_peers,  slots_list)
+    surr_peers_idx = _peers_as_indices(slot_order, deck._surr_peers, slots_list)
+    diag_peers_idx = _peers_as_indices(slot_order, deck._diag_peers, slots_list)
+
+    cores_str    = [c.value for c in cores]
+    placeable_str = [t.value for t in _get_placeable(card_class)]
+    arcane_slot_indices = [slot_order[p] for p in deck.arcane_slots]
+
+    # Read AUTO_PLACE_ARCANE live so a runtime set_mode() flip is honored. The
+    # classic optimizer has no user toggle — config.yaml is the single source.
+    from . import config as _cfg
+    auto_place_arcane = _cfg.AUTO_PLACE_ARCANE
+
+    # ── Call Rust ─────────────────────────────────────────────────────────────
+    asgn_strs, best_score = _ndm_core.run_sa_optimize(
+        slots               = slots_list,
+        row_peers           = row_peers_idx,
+        col_peers           = col_peers_idx,
+        surr_peers          = surr_peers_idx,
+        diag_peers          = diag_peers_idx,
+        arcane_slot_indices = arcane_slot_indices,
+        auto_place_arcane   = auto_place_arcane,
+        min_regular         = deck.min_regular,
+        max_greed           = deck.max_greed,
+        is_shiny            = (card_class == CardClass.SHINY),
+        cores               = cores_str,
+        placeable           = placeable_str,
+        n_iter     = n_iter,
+        t_start    = T_start,
+        t_end      = T_end,
+        # Multiplier constants
+        mult_dir_vert          = MULT_DIR_GREED_VERT,
+        mult_dir_horiz         = MULT_DIR_GREED_HORIZ,
+        mult_evo_greed         = MULT_EVO_GREED,
+        mult_surr_greed        = MULT_SURR_GREED,
+        mult_dir_diag_up       = MULT_DIR_GREED_DIAG_UP,
+        mult_dir_diag_down     = MULT_DIR_GREED_DIAG_DOWN,
+        mult_pure_base         = MULT_PURE_BASE,
+        mult_pure_scale        = MULT_PURE_SCALE,
+        mult_equilibrium       = MULT_EQUILIBRIUM,
+        mult_foil              = MULT_FOIL,
+        mult_steadfast         = MULT_STEADFAST,
+        mult_sparkling         = MULT_SPARKLING,
+        mult_color             = MULT_COLOR,
+        mult_deluxe_flat       = MULT_DELUXE_FLAT,
+        mult_deluxe_core_base  = MULT_DELUXE_CORE_BASE,
+        mult_deluxe_core_scale = MULT_DELUXE_CORE_SCALE,
+        mult_void_core_base    = MULT_VOID_CORE_BASE,
+        mult_void_core_scale   = MULT_VOID_CORE_SCALE,
+        mult_archive_core      = MULT_ARCHIVE_CORE,
+        # Flags
+        greed_additive            = GREED_ADDITIVE,
+        additive_cores            = ADDITIVE_CORES,
+        shiny_positional          = SHINY_POSITIONAL,
+        enable_experimental       = ENABLE_EXPERIMENTAL_EXPONENT,
+        experimental_exponent     = EXPERIMENTAL_EXPONENT,
+        experimental_boost        = EXPERIMENTAL_BOOST,
+        deluxe_counted_as_regular = DELUXE_COUNTED_AS_REGULAR,
+    )
+
+    # ── Convert result back to Python format ──────────────────────────────────
+    best_asgn = {
+        slots_list[i]: CardType(asgn_strs[i])
+        for i in range(len(slots_list))
+    }
+    return best_asgn, best_score
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Optimizer 2.0 — Max mode via the tag-aware kernel
+# ──────────────────────────────────────────────────────────────────────────────
+# The spreadsheet pipeline now drives the same kernel as the web app, run in
+# its Max configuration: unlimited mono-color supply, color-blind positional
+# counting, blanket favorable tags, and the deck's implicit (Wold's only).
+# `--engine classic` (config `engine: classic`) keeps the old kernel callable
+# for A/B comparison; the parity harness in scripts/ uses both.
+
+# Real greed in 2.0 = the 4 orthogonal directions only (spec §2.3). The
+# 0-multiplier greeds (surr/evo/diag) are score-equivalent as fillers, so
+# dropping them preserves optima (see MODELING_CHOICES.md).
+_TAGGED_GREEDS = [
+    CardType.DIR_GREED_UP, CardType.DIR_GREED_DOWN,
+    CardType.DIR_GREED_LEFT, CardType.DIR_GREED_RIGHT,
+]
+
+
+def _tagged_max_stacks(
+    deck: Deck,
+    card_class: CardClass,
+    implicits: Optional[List[tuple]] = None,
+    colors_real: bool = False,
+) -> List[tuple]:
+    """Unlimited Max supply for this (deck, class). Mono-color by default —
+    the mono color follows a color-keyed implicit (velara → green) so
+    readouts match the build guidance; scoring is color-blind regardless.
+    Under ``colors_real`` (puzzle's color-mismatch implicit) every type is
+    supplied in all four colors and the SA optimizes them for real."""
+    from .implicits import preferred_mono_color
+    types: List[CardType] = []
+    if card_class == CardClass.SHINY and not SHINY_POSITIONAL:
+        types.append(CardType.TYPELESS)
+    else:
+        types += [CardType.ROW, CardType.COL, CardType.SURR, CardType.DIAG,
+                  CardType.TYPELESS]
+    if ALLOW_DELUXE:
+        types.append(CardType.DELUXE)
+    types += _TAGGED_GREEDS
+    if deck.arcane_slots:
+        types.append(CardType.ARCANE)
+    if colors_real:
+        colors = ["red", "green", "blue", "yellow"]
+    else:
+        colors = [preferred_mono_color(implicits or []) or "red"]
+    # (type, color, scale_color, groups, count(-1 = unlimited), min_place)
+    return [(t.value, c, "", [], -1, 0) for t in types for c in colors]
+
+
+def _tagged_rules(deck: Deck) -> Tuple[List[tuple], int]:
+    """Map classic min_regular / max_greed onto kernel rules.
+
+    Returns (tag_rules, min_stat_placed). Mirrors the classic kernel's
+    constraint semantics, including the min_regular nullification when
+    min_regular + max_greed exceed the slot count.
+    """
+    n = len(deck.slots)
+    rules: List[tuple] = []
+    if deck.max_greed >= 0:
+        rules.append(("greed", "", 0, deck.max_greed))
+    min_stat = deck.min_regular if deck.min_regular >= 0 else 0
+    if (deck.min_regular >= 0 and deck.max_greed >= 0
+            and deck.min_regular + deck.max_greed > n):
+        min_stat = 0   # classic: conflicting constraints disable the floor
+    return rules, min_stat
+
+
+def _live_auto_place_arcane() -> bool:
+    # Read live (not at import) so a runtime set_mode() flip is honored —
+    # same rule as sa_optimize().
+    from . import config as _cfg
+    return _cfg.AUTO_PLACE_ARCANE
+
+
+def sa_optimize_tagged(
+    deck:       Deck,
+    card_class: CardClass,
+    cores:      FrozenSet[CoreType],
+    n_iter:     int,
+    implicits:  Optional[List[tuple]] = None,
+    seed:       Optional[int] = None,
+    final_pass: Optional[bool] = None,
+) -> Tuple[Dict[Position, CardType], float]:
+    """One SA restart through the 2.0 tag-aware kernel in Max configuration.
+
+    ``final_pass`` overrides the §6 non-foil-evo cleanup (default: on for
+    Wold's, off for vanilla). The parity harness passes False to compare
+    against the classic kernel on its own model.
+    """
+    from .implicits import split_blanket_assignable, LEGAL_COMBOS
+
+    slots_list = list(deck.slots)
+    slot_order = {p: i for i, p in enumerate(slots_list)}
+    imps = implicits or []
+    blanket, assignable = split_blanket_assignable(imps)
+
+    # color_mismatch (puzzle) scores MISMATCHED neighbor colors — under the
+    # blanket mono model the kernel would assume max mismatch on an all-one-
+    # color layout. Optimize real colors instead (mirrors the web app).
+    # EQUILIBRIUM scales with the deck's unique colors (shiny only), so a
+    # combo carrying it also runs colors-real: the SA places the colors and
+    # the kernel counts them, exactly like the game.
+    colors_real = (
+        any(t[0] == "color_mismatch" for t in imps)
+        or (card_class == CardClass.SHINY and CoreType.EQUILIBRIUM in cores)
+    )
+
+    tag_rules, min_stat = _tagged_rules(deck)
+
+    asgn_list, score = _ndm_core.run_sa_tagged(
+        slots               = slots_list,
+        row_peers           = _peers_as_indices(slot_order, deck._row_peers, slots_list),
+        col_peers           = _peers_as_indices(slot_order, deck._col_peers, slots_list),
+        surr_peers          = _peers_as_indices(slot_order, deck._surr_peers, slots_list),
+        diag_peers          = _peers_as_indices(slot_order, deck._diag_peers, slots_list),
+        arcane_slot_indices = [slot_order[p] for p in deck.arcane_slots],
+        stacks              = _tagged_max_stacks(deck, card_class, imps, colors_real),
+        tag_rules           = tag_rules,
+        blanket_groups      = blanket,
+        assignable_groups   = assignable,
+        implicits           = imps,
+        # Under colors_real a colorless COLOR core is inert by design — give
+        # it a concrete color so the SA can weigh it (any color is symmetric
+        # in unlimited supply; the web enumerates the four color rows).
+        cores               = [
+            (c.value, "red" if (colors_real and c == CoreType.COLOR) else "", -1.0)
+            for c in cores
+        ],
+        min_stat_placed     = min_stat,
+        # §6 non-foil-evo cleanup: Wold's-only model improvement. Vanilla
+        # stays exactly on the classic model (it's the regression baseline).
+        final_pass_nonfoil_evo = (MODE != "vanilla") if final_pass is None else final_pass,
+        exact_groups        = False,
+        n_iter              = n_iter,
+        restarts            = 1,
+        mult_dir_vert          = MULT_DIR_GREED_VERT,
+        mult_dir_horiz         = MULT_DIR_GREED_HORIZ,
+        mult_pure_base         = MULT_PURE_BASE,
+        mult_pure_scale        = MULT_PURE_SCALE,
+        mult_equilibrium       = MULT_EQUILIBRIUM,
+        mult_foil              = MULT_FOIL,
+        mult_steadfast         = MULT_STEADFAST,
+        mult_sparkling         = MULT_SPARKLING,
+        mult_color             = MULT_COLOR,
+        mult_deluxe_flat       = MULT_DELUXE_FLAT,
+        mult_deluxe_core_base  = MULT_DELUXE_CORE_BASE,
+        mult_deluxe_core_scale = MULT_DELUXE_CORE_SCALE,
+        mult_void_core_base    = MULT_VOID_CORE_BASE,
+        mult_void_core_scale   = MULT_VOID_CORE_SCALE,
+        mult_archive_core      = MULT_ARCHIVE_CORE,
+        greed_additive         = GREED_ADDITIVE,
+        additive_cores         = ADDITIVE_CORES,
+        is_shiny               = (card_class == CardClass.SHINY),
+        auto_place_arcane      = _live_auto_place_arcane(),
+        colors_real            = colors_real,
+        complex_cards          = False,
+        wv_foil_rules          = MODE != "vanilla",
+        floor_counts_deluxe    = DELUXE_COUNTED_AS_REGULAR,
+        seed                   = seed,
+        legal_combos           = LEGAL_COMBOS if assignable else None,
+    )
+
+    best_asgn = {
+        slots_list[i]: CardType(asgn_list[i][0])
+        for i in range(len(slots_list))
+    }
+    return best_asgn, score

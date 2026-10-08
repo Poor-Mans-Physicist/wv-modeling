@@ -1,0 +1,41 @@
+# Rust build artifacts
+ndm_core/target/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Compiled extension (users build this themselves)
+*.pyd
+*.so
+*.whl
+
+# Spreadsheet outputs
+*.xlsx
+
+# implicit-impact comparison outputs (scripts/implicit_impact.py)
+implicit_impact_with.json
+implicit_impact_without.json
+implicit_impact_balance.json
+implicit_impact.html
+implicit_impact.md
+
+# Python virtual environment
+.venv/
+
+# Claude Code worktrees + per-project metadata (they live inside the repo)
+.claude/
+
+# Scratch / smoke-test artifacts (local-only)
+scratch_*.py
+scratch_*.log
+scratch_*.txt
+
+# WASM-port web app — heavy build artifacts. The per-tree wasm-port/.gitignore
+# handles its own python/rust/web exclusions; these are the absolute-path
+# entries that need to live at the repo root.
+wasm-port/.venv/
+
+# Other personal junk
+WASM_PORT_PLAN.md

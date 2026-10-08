@@ -1,0 +1,217 @@
+# NDM Optimizer configuration.
+#
+# Default values represent Wold's Vaults mode. The `modes:` section at the
+# bottom contains overrides applied when --mode <name> is selected (deep merge).
+# Add a new top-level mode by adding another key under `modes:`.
+
+# Spreadsheet-CLI engine (Optimizer 2.0). "tagged" = the tag-aware Max kernel
+# shared with the web app (deck implicits included on Wold's). "classic" =
+# the 1.x color-blind kernel, kept for A/B comparison and parity checks.
+engine: tagged
+
+# Use this for "extra" core slots you can add to a deck. By default, deckmod = 1
+# because you can use the core expertise in Wold's to add a free core when
+# crafting, and remove it later in dungeons. For experimental cores like the
+# balance core, reduce deckmod so every deck must reserve a slot for that core.
+deckmod: 1
+
+# Deck keys to skip at load time. A "key" is the YAML filename stem (with any
+# leading `NN_` prefix stripped) or the JSON `values.<key>` property. Useful
+# for excluding decks you don't want to optimize without deleting their files.
+# Example: ["arcane", "wold"] would skip both `decks/<n>_arcane.yaml` and
+# `values.arcane`, plus `<n>_wold.yaml` and `values.wold`.
+excluded_decks: []
+
+# Which JSON deck file under decks/ to load (relative path). Each mode has its
+# own roster + per-deck stats — wolds and vanilla don't share files. YAML decks
+# next to it (e.g. moon.yaml) are still loaded mode-agnostically.
+# Set to an empty string to load no JSON at all (YAML-only setups).
+decks:
+  json_file: wolds_decks.json
+
+# Which game-card dump (repo root, relative path) feeds the Preview chooser
+# and the legal tag-combo catalog. Verbatim copies of the game's
+# `config/the_vault/card/modifiers.json` — wolds from the pack repo, vanilla
+# from a stock Vault Hunters instance (the_vault 3.21.1). Per-mode: the two
+# games have different card rosters (303 vs 183 entries).
+cards:
+  json_file: modifiers.json
+
+# Deck-implicit master switch for the spreadsheet CLI (Wold's only — vanilla
+# never has implicits). `enabled: false` (or the `--no-implicits` flag)
+# scores every deck's bare layout, for base-vs-implicit balance comparisons.
+implicits:
+  enabled: true
+
+# Greed values are ADDITIVE BONUSES (+x), not standalone multipliers. The
+# game (base the_vault CardDeck.getGreedMultiplier, audited 2026-07-31)
+# computes target ×(1 + Σ(roll − 1)) — each greed contributes its roll
+# minus one. Wold's greed cards roll [t1 ×3, t2 ×4, t3 ×5] (pack
+# config/the_vault/card/modifiers.json), so a best-roll tier-3 card
+# contributes +4 = +400%. Enter the ADDEND here: 4, not 5.
+greed:
+  dir_vert:      4    # +400% per greed (in-game "×5" tier-3 card)
+  dir_horiz:     4    # +400% per greed (in-game "×5" tier-3 card)
+  evo:           0    # set > 0 to enable
+  surr:          0    # set > 0 to enable
+  dir_diag_up:   0    # NE / NW diagonal greed
+  dir_diag_down: 0    # SE / SW diagonal greed
+
+# Core defaults = the BEST possible in-game roll (greater-tier max) from the
+# pack's `config/the_vault/card/deck_modifiers.json` + the woldsvaults addon
+# datagen (`new_cores.json`). Re-synced 2026-07-14 against the current pack
+# pull; flat cores store the whole multiplier (game value + 1), scaling cores
+# store the per-unit increment. The web UI converts to/from % for display.
+cores:
+  pure_base:   1.0
+  pure_scale:  0.07   # greater pure 0.05–0.07 /non-foil card
+  # Equilibrium stores the PER-COLOR roll (StatEfficiencyDeckModifier,
+  # audited 2026-08-01): value = 1 + roll × unique deck colors, shiny only.
+  # Greater tier rolls 0.3–0.5 ⇒ best 0.5/color = ×3.0 at all 4 colors.
+  # Combos carrying it run colors-real so the SA actually places the colors.
+  equilibrium: 0.5
+  foil:        2.5    # the SHINY core (greater shiny 1.0–1.5 on Foil cards)
+  steadfast:   2.1    # greater steadfast 0.7–1.1 (was 2.2 — pack retuned it)
+  # Sparkling core — flat SHINY-only multiplier; behaves like steadfast with a
+  # higher number. Wold's-only (vanilla flips `sparkling_allow` off below).
+  sparkling:       2.5
+  sparkling_allow: true
+  color:       1.75
+  # Void core (variable, like pure/deluxe-core): scales with dead-card count.
+  # When `allow: true` the candidate enumerator considers it; when false it's
+  # never permuted into a candidate set (matches vanilla, which has no void core).
+  void_allow:  true
+  void_base:   1.0
+  void_scale:  0.3
+  # Archive core (live semantics, wv aa5e7b39): per-card modifier value =
+  # `base ^ n_arcane_placed`, aggregated ADDITIVELY with the other cores in
+  # the per-card core_mult (MixinCardDeck: value += mod − 1). Runic alone
+  # remains a whole-card multiplier.
+  # `allow: true` lets the candidate enumerator and the core picker surface it;
+  # vanilla sets false so the row is hidden mode-wide regardless of geometry.
+  # Even with allow=true, enumeration still gates on the deck having ≥ 1 arcane
+  # slot (otherwise `n_arcane_placed` is permanently 0 → the term is inert).
+  archive_allow: true
+  archive_core:  1.2
+  # Structural cores (WEB ONLY — outer CLI ignores these flags).
+  # Construction Core: adds up to 3 new regular `O` slots to the deck grid.
+  # Arcane Core:       converts up to 3 existing `O` slots to `A` (arcane).
+  # Both occupy one of the deck's `core_slots` budget each. They mutate the
+  # deck layout BEFORE the SA runs — the kernel never learns about them.
+  # `*_allow: false` hides the option from the picker entirely. Vanilla flips
+  # both off; Wold's allows both.
+  construction_allow: true
+  arcane_core_allow:  true
+
+deluxe:
+  allow:      true
+  flat:       2       # flat NDM contribution per deluxe card
+  core_base:  1.0     # deluxe (fancy) core intercept
+  core_scale: 0.2     # deluxe core multiplier per deluxe card
+
+# Arcane behavior.
+#  auto_place: true  → every arcane (`A`) slot is filled with an ARCANE card
+#                      before SA. Classic optimizer locks them; GUI optimizer
+#                      lets SA swap *colors* within arcane-locked slots (subject
+#                      to per-color inventory) but never swap ARCANE ↔ DEAD.
+#  auto_place: false → initial fill is still ARCANE, but SA may swap each arcane
+#                      slot to DEAD (fueling void core) when that's a better
+#                      trade. GUI optimizer also obeys the per-color inventory.
+arcane:
+  auto_place: true
+
+stacking:
+  greed_additive: true   # true → greed multipliers on the same card sum;     false → multiply
+  additive_cores: true   # true → core multipliers sum together;             false → multiply
+
+shiny:
+  positional: true   # false → shiny decks become flat T cards (vanilla style)
+
+experimental:
+  enable_exponent: false   # experimental balance-core behavior
+  exponent: 0.65           # 1.0 = no change; <1 penalises dominance; >1 rewards it
+  boost:    0.4
+
+# "Include selected construction cores": swap in the pre-built structural-core
+# layouts from decks/structural_layouts.json (Wold / Fairy / Mystery balance
+# builds using the greater Construction / Arcane cores) and subtract the
+# structural cores used from each deck's core budget, exactly as in-game.
+# A deck entry may also force implicits (Mystery → runic + bishop).
+# CLI flag --structural-cores forces this on for one run.
+structural_cores:
+  include_selected: false
+  layouts_file: structural_layouts.json
+
+constraints:
+  deluxe_counted_as_regular: false   # false → deluxe cards don't satisfy min_regular
+
+display:
+  balance: true
+  heatmap: true
+
+metrics:
+  hns_q: 1.5    # Hill Number Score exponent
+  spread: false # noisy / experimental spread metric
+
+output:
+  export_spreadsheet: true
+  spreadsheet_prefix: "Panel_WV_Decks_real_"   # produces "{prefix}ndm_simulation.xlsx"
+
+testing:
+  # When true, every deck/class is run through all of `panel_configs`.
+  # When false, each deck uses its own min_regular / max_greed settings.
+  full_panel: true
+  panel_configs:
+    - { label: "no greed",      min_regular: -1, max_greed:  0 }
+    - { label: "min 14 reg",    min_regular: 14, max_greed: -1 }
+    - { label: "min 8 reg",     min_regular:  8, max_greed: -1 }
+    - { label: "unconstrained", min_regular: -1, max_greed: -1 }
+  n_iter:   60000
+  restarts: 12
+
+# Mode-specific overrides. Selected via the --mode CLI flag.
+modes:
+  wolds: {}   # baseline; nothing to override
+
+  vanilla:
+    # Vanilla preset: multiplicative core scaling, positional shiny off,
+    # deluxe card system disabled, void core unavailable. Vanilla also
+    # ships its own deck roster (different layouts, different socket counts).
+    deckmod: 0
+    deluxe:
+      allow: false
+    cores:
+      void_allow:         false
+      archive_allow:      false
+      construction_allow: false
+      arcane_core_allow:  false
+      sparkling_allow:    false
+      # Best rolls from vanilla VH's own deck_modifiers.json (read from the
+      # local "Vault Hunters Third Edition" instance, the_vault 3.21.1).
+      # NOTE: vanilla's greater tier is a copy-pasted 0.3–0.5 block on several
+      # cores (greater shiny/steadfast roll BELOW their base tier; greater
+      # pure literally reads 0.3–0.5 = 10× base — the bug Wold's fixed
+      # downstream). Where that block is the "best" number we don't trust it:
+      # pure uses the base-tier max (0.05) instead of the absurd 0.5.
+      equilibrium: 0.7    # PER-COLOR roll (greater 0.5–0.7); ×3.8 at 4 colors
+      steadfast:   2.2    # base 0.6–1.2 (greater is the broken 0.3–0.5)
+      color:       1.5    # greater 0.3–0.5 edges out base 0.1–0.4
+      pure_scale:  0.05   # base 0.02–0.05; greater 0.3–0.5 treated as a bug
+    stacking:
+      additive_cores: false
+    # Vanilla ships a DIFFERENT greed family (vh_modifiers.json, from the
+    # stock VH 3.21.1 instance): group-gated directional greeds max ×2.5
+    # (addend +1.5), evo greed ×3 (+2), surrounding ×1.75 (+0.75). Under the
+    # same base-game 1+Σ(roll−1) formula their correct addends are far below
+    # 4 — but the kernel doesn't model their group/class targeting either,
+    # so this stays pinned at the legacy 4 until a dedicated vanilla greed
+    # pass. Deliberately NOT calibrated (user call, 2026-07-31).
+    greed:
+      dir_vert:  4
+      dir_horiz: 4
+    shiny:
+      positional: false
+    decks:
+      json_file: vh_decks.json
+    cards:
+      json_file: vh_modifiers.json

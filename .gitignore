@@ -1,0 +1,9 @@
+cache/
+out/
+target/
+__pycache__/
+*.pyc
+.venv/
+roomlab/web/room_*.json
+roomlab/web/atlas_*.png
+roomlab/web/rooms.json

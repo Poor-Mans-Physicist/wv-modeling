@@ -1,0 +1,23 @@
+[package]
+name = "wv-chest-sim"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+flate2 = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = { version = "0.8", features = ["small_rng"] }
+rayon = { version = "1", optional = true }
+
+[features]
+default = ["cli"]
+cli = ["rayon"]
+
+[[bin]]
+name = "wv-modifier-panel"
+path = "src/bin/wv_modifier_panel.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
