@@ -1,0 +1,34 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            libs/vaultsim
+            libs/lane
+            libs/buildkernel
+            libs/ndm
+      - uses: astral-sh/setup-uv@v6
+      - name: Python dependencies
+        run: pip install numpy scipy pillow
+      - name: Fetch game data
+        run: python setup/fetch_sources.py
+      - name: Build
+        run: python setup/doctor.py --build
+      - name: Gates
+        run: python setup/check.py
