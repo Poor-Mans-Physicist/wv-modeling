@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/catalog_*.json
+data/assets.json
+out/
+data/hyper_pools_*.json

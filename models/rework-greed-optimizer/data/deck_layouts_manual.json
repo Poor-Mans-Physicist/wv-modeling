@@ -1,0 +1,150 @@
+{
+ "_note": "Layouts supplied by the user from the DeckFAST web app; model/deck.py reproduces their NDM exactly.",
+ "decks": {
+  "The Mystery Deck|construction v2": {
+   "deck": "The Mystery Deck",
+   "key": "mystery",
+   "config": "user layout, Greater Construction (5 slots)",
+   "ndm_deckfast": 10936.88,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "core_slots": 1,
+   "grid": [
+    ">RR>R<>R<",
+    " ^^ ^v   ",
+    ">R a X<R ",
+    " ^v X^   ",
+    ">RR<^>R< ",
+    "  ^      "
+   ]
+  },
+  "The Anvil Deck|custom midgame": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "user midgame layout (2 of each greed card, reduced cores)",
+   "ndm_deckfast": 1735.65,
+   "cores": [
+    "pure",
+    "foil",
+    "color"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 3,
+   "core_values": {
+    "pure_scale": 0.05,
+    "foil": 2.2,
+    "color": 1.75
+   },
+   "grid": [
+    "R>R<R>R<R",
+    "  ^SvS^  ",
+    "   SSv   ",
+    " RRRRRRR "
+   ]
+  },
+  "The Anvil Deck|greed update mid (weak greed)": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "greed update mid (weak greed)",
+   "ndm_deckfast": 872.61,
+   "cores": [
+    "color",
+    "foil",
+    "pure"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 3,
+   "core_values": {
+    "pure_scale": 0.05,
+    "foil": 2.2,
+    "color": 1.75
+   },
+   "grid": [
+    ">RR<RRRRR",
+    "  ^>S<^  ",
+    "   vSv   ",
+    " RRRRRRR "
+   ]
+  },
+  "The Rook Deck|greed update end (strong greed)": {
+   "deck": "The Rook Deck",
+   "key": "wall",
+   "config": "greed update end (strong greed)",
+   "ndm_deckfast": 2170.62,
+   "cores": [
+    "color",
+    "foil",
+    "pure"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "v C v C v",
+    "C ^ C ^ C",
+    "^ v ^ v v",
+    "v C C C C",
+    "C ^ ^ ^ ^"
+   ]
+  },
+  "The Mystery Deck|greed update max (elite greed, construction v2 shape)": {
+   "deck": "The Mystery Deck",
+   "key": "mystery",
+   "config": "greed update max (elite greed, construction v2 shape)",
+   "ndm_deckfast": 6114.32,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "core_slots": 1,
+   "grid": [
+    ">RR<R<>R<",
+    " ^^ ^v   ",
+    ">R a X<R ",
+    " ^v X^   ",
+    ">RR<^>R< ",
+    "  ^      "
+   ]
+  },
+  "The Anvil Deck|mid free-core check (not for paste)": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "mid free-core check (not for paste)",
+   "ndm_deckfast": 882.05,
+   "cores": [
+    "color",
+    "foil",
+    "void_core"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 3,
+   "core_values": {
+    "pure_scale": 0.05,
+    "foil": 2.2,
+    "color": 1.75
+   },
+   "grid": [
+    "R<>R<R>RR",
+    "  _^_^_  ",
+    "   ___   ",
+    " RRRRRRR "
+   ]
+  }
+ }
+}

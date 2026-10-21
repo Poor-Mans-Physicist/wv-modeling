@@ -1,0 +1,417 @@
+{
+ "build": {
+  "abilities": {
+   "Arcane_Rail": 1,
+   "Colossus_Base": 1,
+   "Dash_Base": 8,
+   "Fangs_Maw": 1,
+   "Heal_Base": 4,
+   "Necromancy_Base": 1,
+   "Nova_Slow": 1,
+   "Rampage_Base": 1,
+   "Smite_Base": 1,
+   "Taunt_Base": 2,
+   "Vein_Miner_Base": 4
+  },
+  "charm_god": "IDONA",
+  "charm_mods": [
+   [
+    "the_vault:damage_increase",
+    "IdonaAttackDamage",
+    0.01
+   ],
+   [
+    "the_vault:ability_power_percent",
+    "IdonaAbilityPower",
+    0.005
+   ]
+  ],
+  "deck": [
+   "amp_item_rarity",
+   "amp_armor_percent",
+   "amp_armor_percent",
+   "amp_ability_power_percent",
+   "amp_item_rarity",
+   "amp_armor_percent",
+   "amp_health_percentile",
+   "amp_mana_flat",
+   "amp_armor_percent",
+   "amp_ability_power_percent",
+   "amp_health_percentile"
+  ],
+  "gods": {
+   "levels": {
+    "idona": 13,
+    "tenos": 3,
+    "velara": 3,
+    "wendarr": 5
+   },
+   "mts": {
+    "idona": [],
+    "tenos": [
+     "tenos_unstoppable_greed"
+    ],
+    "velara": [
+     "velara_adaptive_armor"
+    ],
+    "wendarr": [
+     "wendarr_temporal_breaking",
+     "wendarr_paced_strikes"
+    ]
+   },
+   "nodes": {
+    "idona": [
+     22,
+     23,
+     24,
+     25,
+     28,
+     29,
+     31,
+     34,
+     37,
+     39,
+     41,
+     44,
+     50,
+     51,
+     53,
+     54,
+     55,
+     56,
+     58,
+     62,
+     64,
+     65,
+     66,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     78,
+     80,
+     81,
+     92,
+     94,
+     96,
+     97,
+     98,
+     99,
+     103
+    ],
+    "tenos": [
+     2,
+     69,
+     71,
+     73,
+     75,
+     77,
+     81,
+     83,
+     84,
+     104,
+     105,
+     107,
+     109,
+     111
+    ],
+    "velara": [
+     0,
+     4,
+     6,
+     7,
+     9,
+     14,
+     18,
+     21,
+     22,
+     23,
+     24,
+     28,
+     29,
+     32
+    ],
+    "wendarr": [
+     1,
+     59,
+     60,
+     62,
+     65,
+     66,
+     70,
+     73,
+     76,
+     79,
+     85,
+     87,
+     88,
+     91,
+     93,
+     94,
+     95,
+     96,
+     97,
+     100
+    ]
+   }
+  },
+  "greed": [],
+  "items": {
+   "boots": {
+    "etching": null,
+    "implicits": [
+     [
+      "BaseModArmor",
+      "the_vault:base_armor"
+     ],
+     [
+      "BaseBonusPool",
+      "the_vault:base_movement"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_armor",
+     "the_vault:mod_health",
+     "the_vault:mod_resistance"
+    ],
+    "seal": "the_vault:u_all_skills",
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_item_rarity",
+     "the_vault:mod_healing_efficiency",
+     "the_vault:mod_item_quantity"
+    ],
+    "type": "boots",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   },
+   "chestplate": {
+    "etching": "the_vault:etching_smite_echo",
+    "implicits": [
+     [
+      "BaseModAbility",
+      "the_vault:base_armor"
+     ],
+     [
+      "BaseBonusPool",
+      "the_vault:base_thorns_damage_flat"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_knockback_resistance",
+     "the_vault:mod_effect_cloud_chance",
+     "the_vault:mod_health"
+    ],
+    "seal": null,
+    "shadow": [
+     null,
+     null,
+     null
+    ],
+    "suffixes": [
+     "the_vault:mod_item_rarity",
+     "the_vault:mod_healing_efficiency",
+     "the_vault:mod_item_quantity",
+     "the_vault:mod_effect_duration"
+    ],
+    "type": "chestplate",
+    "udrop": null,
+    "unique": "ancient:the_vault:crystalplate",
+    "unusual": null
+   },
+   "helmet": {
+    "etching": null,
+    "implicits": [
+     [
+      "BaseModArmor",
+      "the_vault:base_armor"
+     ],
+     [
+      "BaseBonusPool",
+      "the_vault:base_ap"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_armor",
+     "the_vault:mod_health",
+     "the_vault:mod_ability_increase"
+    ],
+    "seal": "the_vault:u_all_skills",
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_item_quantity",
+     "the_vault:mod_item_rarity",
+     "the_vault:mod_healing_efficiency"
+    ],
+    "type": "helmet",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   },
+   "leggings": {
+    "etching": null,
+    "implicits": [
+     [
+      "BaseModArmor",
+      "the_vault:base_armor"
+     ],
+     [
+      "BaseBonusPool",
+      "the_vault:base_movement"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_added_ability_level_smite",
+     "the_vault:mod_health",
+     "the_vault:mod_armor"
+    ],
+    "seal": "the_vault:u_all_skills",
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_item_rarity",
+     "the_vault:mod_item_quantity",
+     "the_vault:mod_healing_efficiency"
+    ],
+    "type": "leggings",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   },
+   "mainhand": {
+    "etching": null,
+    "implicits": [
+     [
+      "BaseAttackDamage",
+      "the_vault:base_attack_damage"
+     ],
+     [
+      "BaseAttackSpeed",
+      "the_vault:base_attack_speed"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_reaving_damage"
+    ],
+    "seal": null,
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_echoing_chance",
+     "the_vault:mod_slowness_cloud",
+     "the_vault:mod_attack_speed_percent"
+    ],
+    "type": "axe",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   },
+   "necklace": {
+    "etching": null,
+    "implicits": [],
+    "prefixes": [],
+    "seal": null,
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_added_ability_level_taunt_charm"
+    ],
+    "type": "vault_necklace",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   },
+   "offhand": {
+    "etching": "woldsvaults:ingenium",
+    "implicits": [
+     [
+      "ModAPLvl",
+      "the_vault:base_ap"
+     ]
+    ],
+    "prefixes": [
+     "the_vault:mod_added_ability_level_smite",
+     "the_vault:mod_ability_increase",
+     "the_vault:mod_added_ability_level_arcane"
+    ],
+    "seal": null,
+    "shadow": null,
+    "suffixes": [
+     "the_vault:mod_effect_duration",
+     "the_vault:mod_healing_efficiency",
+     "the_vault:mod_lucky_hit_chance"
+    ],
+    "type": "wand",
+    "udrop": null,
+    "unique": null,
+    "unusual": null
+   }
+  },
+  "pd": [
+   "Arcane_Rail",
+   "Fangs_Maw"
+  ],
+  "talents": {
+   "Arcana": 1,
+   "Blood_Chakra": 4,
+   "Blood_Rush": 4,
+   "Depleted": 4,
+   "Ethereal": 3,
+   "Execution_Strike": 1,
+   "Executioner": 3,
+   "Fatal_Strike": 1,
+   "Hexbreaker": 4,
+   "Intelligence": 4,
+   "Life_Steal": 1,
+   "Lightning_Damage": 1,
+   "Lingering_Fumes": 4,
+   "Mana_Steal": 3,
+   "Medic": 5,
+   "Methodical": 3,
+   "Mind_Meld": 1,
+   "Sorcery": 2,
+   "Stack_Master": 1,
+   "Strength": 1
+  },
+  "trinkets": [
+   "the_vault:clover",
+   "the_vault:carapace",
+   "the_vault:lucky_goose",
+   "the_vault:crystal_ball",
+   "the_vault:giants_heart",
+   "the_vault:the_dice",
+   "the_vault:vibrating_stone",
+   "the_vault:immortal_seal",
+   "the_vault:healing_salve",
+   "the_vault:phylactery"
+  ],
+  "weave": true
+ },
+ "deck": "The Mystery Deck|greed update max (elite greed, construction v2 shape)",
+ "family": "ability:Smite_Base",
+ "mode": "intended",
+ "pins": {
+  "kernel": {
+   "cycle": 7.915425892008528,
+   "cycle_damage": 8.502858828547154,
+   "cycle_survival": 7.915425892008528,
+   "dps": 224536824.99260947,
+   "ehp": 21564667.137974765,
+   "pack_dps": 283475903.58558756,
+   "score": 0.3439512824339328
+  },
+  "python": {
+   "cycle": 7.915425892008528,
+   "cycle_damage": 8.502858828547154,
+   "cycle_survival": 7.915425892008528,
+   "dps": 224536824.99260938,
+   "ehp": 21564667.137974765,
+   "pack_dps": 283475903.5855875,
+   "score": 0.3439512824339328
+  }
+ },
+ "stage": "max",
+ "variant": "all"
+}

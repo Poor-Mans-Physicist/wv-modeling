@@ -1,0 +1,160 @@
+{
+ "written_for": "2026-10-19 22:01",
+ "about": "Hand-written commentary for the Nodes view of the greed-rework ledger. Rates, multipliers and family lists are computed live from the results; only this text is manual. Re-read it against the new numbers after every optimizer rerun and update written_for.",
+ "stages": {
+  "early|normal": "40k god XP buys level 1 in two gods; no major is reachable. Velara is the charm god for 37 of 44 builds (29 before) and 10 of the top 11, with Armored, Armored II and Pious Devotion in 43 builds. The deck menus put 42 of 44 on the Snake deck (28 Arsenal, 14 Jupiter) with +75% greed cards; the median rose 0.5 cycles and the best build is -0.59 (sword) against -0.62. The one-shot test binds 24 of 44. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "mid|normal": "150k XP. Idona is the charm god for 36 of 44 builds (33 before) and 8 of the top 11. Grand Archmage is in 57% with 5 of the top 11, Power Dump in 39% at a median x1.9; Ultra Rampaging returns in 5 builds (axe, trident, rang, Fangs Base, Ice Bolt), 3 of them in the top 11; Immortal is in 3 builds. Designs split between Velara (Aegis), Puzzle and Snake. The median rose 1.0 cycle; the best build is 1.91 (axe) against 0.90. The one-shot test binds 36 of 44. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "end|normal": "800k XP. Idona is the charm god for 39 of 44 and 10 of the top 11 (42 and 11 before). Under Pressure is in 86%, Power Dump in 77% at a median x9.7 (x4.2 before), Ultra Rampaging in 27% with 8 of the top 11, Adaptive Armor in 25% with 8. Immortal is in 4 builds. 36 builds use the Fives deck with the Archive core and Arcane cards. Fangs Maw leads at 9.10, then Implode Life Tap 8.23; the best was 8.18 (trident) before, and the median rose 0.8 cycles. The one-shot test binds 42 of 44. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "max|normal": "2M XP. Idona is the charm god for 32 of 44 and Velara for 11 (38 and 5 before); the top 11 splits 7 Idona, 4 Velara. Under Pressure 91%, Unstoppable Greed 82%, Power Dump 80% (median x9.5), The Stonewall 80% and the whole top 11, Adaptive Armor 64%. Ultra Rampaging is in 10 builds with 5 of the top 11, Immortal in 9 with 4. 43 of 44 builds use the Construction v2 Mystery deck (Shiny 22, Tool 12, Void 9) with +150% greed cards (+200% before). Fangs Maw leads at 11.71 (14.54 before); the median fell 2.0 cycles. The one-shot test binds 42 of 44. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "mid|eot": "The Edge of Time pass forces the Wendarr path for all 39 builds, and Wendarr is every build's charm god. Edge of Time is in 38, Temporal Shielding in 54% with 8 of the top quartile. Best build 3.89 (Ice Bolt) against 1.91 without Edge of Time (+2.0); 2.73 before. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "end|eot": "Temporal Shielding is in all 44 builds and Edge of Time in 64%; Wendarr is the charm god for 28 and Idona for 16, which skip Edge of Time. Unstoppable Greed 77% (45% before), Under Pressure 73%, Power Dump 66% (median x10.5). Adaptive Armor is in 8 builds, 6 of them in the top 11. Best build 11.57 (Fangs Maw) against 9.10 without Edge of Time (+2.5); 10.56 before. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)",
+  "max|eot": "Temporal Shielding 100%, Under Pressure 91%, Paced Strikes 89%, Edge of Time 84%, Speed Demon 80%, Unstoppable Greed 77%, The Stonewall 70% (10 of the top 11). The Stonewall builds carry a median 420% stable speed before its x0.45 and land at 189%. Wendarr is the charm god for 37 of 44 and 10 of the top 11. Best build 14.29 (Fangs Maw, then sword 13.81) against 11.71 without Edge of Time (+2.6); 17.06 before. (Before = the 14:36 fixed-layout run; the 18:41 menu run offered banned cards and is not compared.)"
+ },
+ "nodes": {
+  "velara_immortal": {
+   "role": "Survival major for a few builds",
+   "why": "The revive restores full health once per fight, so the landed-hits window only needs half its hits survived from full health, rounded down. The one-shot test is lifted only if at most one hit lands in the whole fight, and it binds 42 of 44 builds at end and max, so there it mostly sees the x1.25 HP and armor. Its lead in the 18:41 run came with banned deck cards and is gone with them.",
+   "power": "x1.25 HP and armor and one revive per fight, at x0.5 damage. 7% at mid, 9% at end, 20% at max (4 of the top 11)."
+  },
+  "idona_ultra_rampaging": {
+   "role": "Melee, fang and Shield Bash damage major",
+   "why": "Its takers are the melee weapons, rang, the Fang and Ice Bolt builds, Implode Life Tap, Mana Shield Implode and the Shield Bash builds. Grand Archmage cannot be held beside it (one major per tree).",
+   "power": "True Rage reads a median x12.6 at end and x20.2 at max with Fury, at up to x1.5 damage taken at full Fury. 11% at mid (3 of the top 11), 27% at end (8), 23% at max (5)."
+  },
+  "idona_grand_archmage": {
+   "role": "Casters at mid, end and max",
+   "why": "One major per tree means it competes with Ultra Rampaging for Idona's slot. It no longer blocks fang hits (modeled as the fixed bug).",
+   "power": "x3 ability power and the mana doubling. 57% at mid (5 of the top 11), 43% at end (2), 36% at max (2); 6 end and 3 max Edge of Time builds, none in their top quartile."
+  },
+  "idona_power_dump": {
+   "role": "Sneak-cast damage engine (proposed rework)",
+   "why": "Only abilities cast while sneaking use it; each sneaking instant cast empties the bar and multiplies its own hits by the surplus: the mana that came in since the previous sneaking cast, minus its cost. The Starforge nova counts as secondary damage under the 70% main-share rule.",
+   "power": "Median x1.9 at mid, x9.7 at end and x9.5 at max (x10.5 and x9.2 with Edge of Time), up to x47.8 (max Edge of Time). 39% at mid, 77% at end, 80% at max; 8 of the top 11 at end and max."
+  },
+  "tenos_unstoppable_greed": {
+   "role": "Global damage pick (nerfed to 5%)",
+   "why": "Any charm can carry it through a transfer slot; item quantity and rarity come free on gear and deck cards.",
+   "power": "Median x2.12 at end and x1.38 at max (x1.31 and x2.2 before). 70% at end, 82% at max, 77% in both Edge of Time passes."
+  },
+  "velara_adaptive_armor": {
+   "role": "Survival pick for the top builds",
+   "why": "The one-shot test, which binds 42 of 44 builds at end and max, takes its hit at one stack (x1.11); only the landed-hits window averages more stacks, up to x1.43 over five landed hits.",
+   "power": "x1.11 on the one-shot test; the Measured column shows the window average, x1.11 to x1.43 by landed hits. 25% at end (8 of the top 11), 64% at max (9), 18% and 55% with Edge of Time."
+  },
+  "idona_under_pressure": {
+   "role": "Global damage filler",
+   "why": "Cheap, on the path of most Idona trees, and transferable.",
+   "power": "x1.25 averaged over 0 to 30 minutes left. 86% at end, 91% at max and in the max Edge of Time pass."
+  },
+  "velara_the_stonewall": {
+   "role": "Armor pick at max",
+   "why": "The one-shot test binds nearly every max build and ignores avoidance, so its x1.5 armor counts in full; its x0.4 on stable speed also lowers avoidance and raises Castle Bastion's uptime. Keeping the 150% minimum takes 333% before it: the standard max takers carry a median 388% and land at 175% (420% and 189% with Edge of Time).",
+   "power": "x1.5 armor. 80% of standard max builds and the whole top 11 (61% and 8 before), 70% with Edge of Time (10 of the top 11); 2 builds at end."
+  },
+  "wendarr_speed_demon": {
+   "role": "Edge of Time builds only",
+   "why": "Its faster vault clock is a time cost players would not take outside a time build, so the ledger allows it only there.",
+   "power": "x1.1 damage and +10% armor. 80% of max Edge of Time builds with 8 of their top 11; 16% at end."
+  },
+  "wendarr_paced_strikes": {
+   "role": "Global damage filler",
+   "why": "On the Wendarr path and transferable.",
+   "power": "x1.14 averaged over the vault. 61% at max (43% before), 89% of max Edge of Time builds."
+  },
+  "idona_sneaky_advantage": {
+   "role": "Filler, stronger in multi-ability builds",
+   "why": "Counts the debuffs a build keeps on the boss (Vulnerable, Hypothermia, Slowness, the Totem mark, the Necromancy curse, clouds).",
+   "power": "x1.1 to x1.25, typically x1.15 to x1.2. 70% at end, 75% at max."
+  },
+  "idona_banked_anger": {
+   "role": "Idona path filler",
+   "why": "Path filler in Idona-charm trees: 36% at end and 61% at max, 5 of the top 11 at each.",
+   "power": "x1.095 at the assumed 200k damage taken (+0.15 damage cycles)."
+  },
+  "idona_surrounded": {
+   "role": "Idona path filler",
+   "why": "Path filler in Idona-charm trees: 55% at end, 66% at max with 7 of the top 11. It assumes 2.5 mobs nearby on average.",
+   "power": "x1.06 (+0.1 damage cycles)."
+  },
+  "idona_kinetic_impact": {
+   "role": "Speed builds",
+   "why": "Every build carries at least 150% speed, and it reads stable speed after The Stonewall's x0.4. Its takers are mostly Idona-charm casters.",
+   "power": "About x1.04 to x1.24; 50% at end (median x1.11), 48% at max (median x1.08)."
+  },
+  "wendarr_plushie_lover": {
+   "role": "Plushie-locked offhand",
+   "why": "Doubling the plushie's movement speed is a cheap way to meet the 150% minimum while keeping damage on the gear. Speed past 150% pays only through avoidance, Castle Bastion and Kinetic Impact, and with the one-shot test binding 42 of 44 end builds the data does not show what that extra speed buys.",
+   "power": "No single readout. 5% at early, 7% at mid, 75% at end (9 of the top 11), 48% at max (6 of the top 11)."
+  },
+  "wendarr_temporal_breaking": {
+   "role": "Frees the offhand",
+   "why": "Lifts the plushie lock so the offhand can hold a combat piece.",
+   "power": "25% at end, 52% at max, 68% of max Edge of Time builds."
+  },
+  "idona_overcrit": {
+   "role": "Melee and fang builds",
+   "why": "Lucky hit chance cards are banned, so few builds push lucky chance far past 100%. Its takers are the melee weapons, rang, Fangs Base and Shell Porcupine.",
+   "power": "7% at end, 9% at max with 1 of the top 11 each; 11% of max Edge of Time builds with 4 of their top 11."
+  },
+  "idona_pincushion": {
+   "role": "Melee only",
+   "why": "Only normal attacks build its stacks; sword, axe, trident and battlestaff take it from end on.",
+   "power": "x2.0 at end and x2.5 at max over the kill. 3 of the top 11 at end and max; all four max takers are in the Edge of Time top 11."
+  },
+  "velara_malediction": {
+   "role": "Thorns builds",
+   "why": "Heavy-thorns builds (Battering Ram, Shell Porcupine) and a few casters trade healing efficiency for a thorns multiplier.",
+   "power": "Thorns x cube root of (1 + healing efficiency); healing efficiency is forced to -50%. 16% at max (2 of the top 11), 11% with Edge of Time."
+  },
+  "idona_true_rage": {
+   "role": "Pairs with Ultra Rampaging",
+   "why": "Lets Rampage scale attack-damage abilities. Its large readouts need Ultra Rampaging's Fury.",
+   "power": "Median x20.1 at max (x5 to x26.8) and x12.6 at end; x5 in the max Edge of Time pass, where few takers hold Ultra Rampaging."
+  },
+  "idona_crushing_blows": {
+   "role": "Attack-damage multiplier",
+   "why": "Taken by the Javelin builds, Totem, rang, the melee weapons, Fangs Maw and Shell Porcupine.",
+   "power": "x1.15 on hits the multiplier registry applies to; no separate readout. 11% at end, 23% at max (4 of the top 11)."
+  },
+  "idona_super_stacker": {
+   "role": "Idona-charm casters",
+   "why": "Raises max stacks on stacking talents; Idona-charm casters take it (Nova Dot, Toxic Grenade, Chain Lightning).",
+   "power": "Small; no separate readout. 16% at end, 52% at max (5 of the top 11)."
+  },
+  "tenos_deep_reserves": {
+   "role": "Feeds Power Dump",
+   "why": "+50% max mana raises Power Dump's surplus cap. 11 standard max builds take it (5 of the top 11) and 16 max Edge of Time builds (4 of their top 11).",
+   "power": "No separate readout; its value shows up in the Power Dump factor."
+  },
+  "idona_weaponmaster": {
+   "role": "Battlestaff only",
+   "why": "The only two-handed weapon in the ledger.",
+   "power": "x1.5 on battlestaff hits (about +0.4 damage cycles at early, +0.7 from end on)."
+  },
+  "wendarr_edge_of_time": {
+   "role": "Edge of Time pass",
+   "why": "Only allowed in the Edge of Time builds: 38 of 39 at mid, 64% at end and 84% at max. The Idona-charm builds (16 at end, 7 at max) skip it.",
+   "power": "x10 all damage, about +3.7 to +3.8 damage cycles at end/max growth (+2.2 at mid); every hit costs 1 to 3 s of vault time, which the hyperboss benchmark does not score."
+  },
+  "wendarr_temporal_shielding": {
+   "role": "Edge of Time pass",
+   "why": "Only allowed in the Edge of Time builds; 100% there at end and max, 54% at mid with 8 of the top quartile.",
+   "power": "x10 EHP, about +3.7 to +3.8 survival cycles; every hit taken costs 1 to 3 s of vault time."
+  },
+  "wendarr_efficient_steps": {
+   "role": "Movement from fruit efficiency",
+   "why": "Converts fruit efficiency into movement speed. Wendarr-charm Edge of Time builds take it for the speed minimum: 14 at mid, 11 at end, 10 at max. No standard build takes it.",
+   "power": "No separate readout."
+  },
+  "velara_steadfast": {
+   "role": "Niche after the nerf",
+   "why": "It now adds half the knockback resistance above 100% to Armor %, alongside the deck's Armor % cards and Velara's Armored nodes, so it no longer multiplies armor on its own.",
+   "power": "11% at max with 4 of the top 11, 11% of max Edge of Time builds with 1 of their top 11."
+  },
+  "idona_prison_warden": {
+   "role": "Path filler (not counted)",
+   "why": "Needs Glacial Shatter expiring on the target, which the model does not count, so its value here is zero; it appears only because it sits on a path (3 builds at mid, 2 at end, 1 end Edge of Time build).",
+   "power": "Zero in the model."
+  }
+ }
+}

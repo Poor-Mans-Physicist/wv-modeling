@@ -1,0 +1,459 @@
+{
+ "_source": "DeckFAST scripts/archetype_decks.py via tools/import_archetype_decks.py",
+ "decks": {
+  "The Rook Deck (stage shape)|archetype 0 (k=3, end)|pure+color+foil": {
+   "deck": "The Rook Deck (stage shape)",
+   "key": "wall",
+   "config": "archetype 0 (k=3, end)",
+   "score_archetype": 2.0975444175806555,
+   "cores": [
+    "pure",
+    "color",
+    "foil"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "implicit_rules": {
+    "wall": {
+     "kind": "freq",
+     "value": 2.0,
+     "ptype": "col"
+    }
+   },
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "v C v C v",
+    "C ^ C ^ C",
+    "v v v v ^",
+    "C C C C v",
+    "^ ^ ^ ^ C"
+   ],
+   "archetype": "0",
+   "members": [
+    "ability:Smite_Base",
+    "ability:Smite_Archon",
+    "ability:Smite_Blast_Wave",
+    "ability:Arcane_Base",
+    "ability:Ice_Bolt_Base",
+    "ability:Javelin_Piercing",
+    "ability:Necromancy_Base",
+    "ability:Necromancy_Archer",
+    "ability:Dash_Damage",
+    "ability:Mana_Shield_Implode",
+    "ability:Shield_Bash",
+    "ability:Shield_Bash_Earthshatter"
+   ]
+  },
+  "The Rook Deck (stage shape)|archetype 1 (k=3, end)|pure+color+foil": {
+   "deck": "The Rook Deck (stage shape)",
+   "key": "wall",
+   "config": "archetype 1 (k=3, end)",
+   "score_archetype": 6.192818164133124,
+   "cores": [
+    "pure",
+    "color",
+    "foil"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "implicit_rules": {
+    "wall": {
+     "kind": "freq",
+     "value": 2.0,
+     "ptype": "col"
+    }
+   },
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "C C v C v",
+    "^ ^ C ^ C",
+    "v v v v ^",
+    "C C C C C",
+    "^ ^ ^ ^ ^"
+   ],
+   "archetype": "1",
+   "members": [
+    "melee:sword",
+    "melee:axe",
+    "melee:battlestaff",
+    "melee:trident",
+    "ability:Grenade_Base",
+    "ability:Fangs_Base",
+    "ability:Fangs_Maw",
+    "ability:Implode_Life_Tap",
+    "ability:Shield_Bash_Battering_Ram",
+    "ability:Totem_Mob_Damage",
+    "ability:Shell_Porcupine"
+   ]
+  },
+  "The Rook Deck (stage shape)|archetype 2 (k=3, end)|pure+color+foil": {
+   "deck": "The Rook Deck (stage shape)",
+   "key": "wall",
+   "config": "archetype 2 (k=3, end)",
+   "score_archetype": 2.9412163260313293,
+   "cores": [
+    "pure",
+    "color",
+    "foil"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "implicit_rules": {
+    "wall": {
+     "kind": "freq",
+     "value": 2.0,
+     "ptype": "col"
+    }
+   },
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "C C v C v",
+    "^ ^ C ^ C",
+    "v v ^ v ^",
+    "C C C C v",
+    "^ ^ ^ ^ C"
+   ],
+   "archetype": "2",
+   "members": [
+    "ability:Fireball_Base",
+    "ability:Fireball_Volley",
+    "ability:Fireball_Fireshot",
+    "ability:Nova_Base",
+    "ability:Nova_Dot",
+    "ability:Arcane_Rail",
+    "ability:Arcane_Prism",
+    "ability:Chain_Lightning_Base",
+    "ability:Chain_Lightning_Orbs",
+    "ability:Chain_Lightning_Charged_Bolts",
+    "ability:Storm_Arrow_Base",
+    "ability:Shard_Blizzard",
+    "ability:Javelin_Base",
+    "ability:Javelin_Scatter",
+    "ability:Earthquake_Base",
+    "ability:Earthquake_Singularity",
+    "ability:Earthquake_Tremor",
+    "ability:Grenade_Sticky",
+    "ability:Toxic_Grenade"
+   ]
+  },
+  "The Rook Deck (stage shape)|archetype all (k=3, end)|pure+color+foil": {
+   "deck": "The Rook Deck (stage shape)",
+   "key": "wall",
+   "config": "archetype all (k=3, end)",
+   "score_archetype": 3.194358333426241,
+   "cores": [
+    "pure",
+    "color",
+    "foil"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "implicit_rules": {
+    "wall": {
+     "kind": "freq",
+     "value": 2.0,
+     "ptype": "col"
+    }
+   },
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "v C v C v",
+    "C ^ C ^ C",
+    "v v ^ v ^",
+    "C C v C v",
+    "^ ^ C ^ C"
+   ],
+   "archetype": "all",
+   "members": [
+    "melee:sword",
+    "melee:axe",
+    "melee:battlestaff",
+    "melee:trident",
+    "ability:Fireball_Base",
+    "ability:Fireball_Volley",
+    "ability:Fireball_Fireshot",
+    "ability:Nova_Base",
+    "ability:Nova_Dot",
+    "ability:Smite_Base",
+    "ability:Smite_Archon",
+    "ability:Smite_Blast_Wave",
+    "ability:Arcane_Base",
+    "ability:Arcane_Rail",
+    "ability:Arcane_Prism",
+    "ability:Chain_Lightning_Base",
+    "ability:Chain_Lightning_Orbs",
+    "ability:Chain_Lightning_Charged_Bolts",
+    "ability:Storm_Arrow_Base",
+    "ability:Ice_Bolt_Base",
+    "ability:Shard_Blizzard",
+    "ability:Javelin_Base",
+    "ability:Javelin_Piercing",
+    "ability:Javelin_Scatter",
+    "ability:Earthquake_Base",
+    "ability:Earthquake_Singularity",
+    "ability:Earthquake_Tremor",
+    "ability:Grenade_Base",
+    "ability:Grenade_Sticky",
+    "ability:Toxic_Grenade",
+    "ability:Necromancy_Base",
+    "ability:Necromancy_Archer",
+    "ability:Dash_Damage",
+    "ability:Fangs_Base",
+    "ability:Fangs_Maw",
+    "ability:Mana_Shield_Implode",
+    "ability:Implode_Life_Tap",
+    "ability:Shield_Bash",
+    "ability:Shield_Bash_Earthshatter",
+    "ability:Shield_Bash_Battering_Ram",
+    "ability:Totem_Mob_Damage",
+    "ability:Shell_Porcupine"
+   ]
+  },
+  "The Mystery Deck (stage shape)|archetype 0 (k=3, max)|pure": {
+   "deck": "The Mystery Deck (stage shape)",
+   "key": "mystery",
+   "config": "archetype 0 (k=3, max)",
+   "score_archetype": 9.139542110617073,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "implicit_rules": {
+    "cake": {
+     "kind": "row_pos",
+     "value": 1.0
+    },
+    "runic": {
+     "kind": "mirror",
+     "value": 2.0
+    }
+   },
+   "core_slots": 1,
+   "grid": [
+    ">RR>R<>R<",
+    " ^^ ^v   ",
+    ">D a D<D ",
+    " ^v X^   ",
+    ">DR<^>RR ",
+    "  ^      "
+   ],
+   "archetype": "0",
+   "members": [
+    "melee:sword",
+    "melee:battlestaff",
+    "melee:trident",
+    "ability:Ice_Bolt_Base",
+    "ability:Shard_Blizzard",
+    "ability:Javelin_Base",
+    "ability:Javelin_Piercing",
+    "ability:Javelin_Scatter",
+    "ability:Earthquake_Base",
+    "ability:Earthquake_Singularity",
+    "ability:Earthquake_Tremor",
+    "ability:Grenade_Base",
+    "ability:Grenade_Sticky",
+    "ability:Dash_Damage",
+    "ability:Mana_Shield_Implode",
+    "ability:Shield_Bash",
+    "ability:Shield_Bash_Earthshatter",
+    "ability:Shield_Bash_Battering_Ram",
+    "ability:Shell_Porcupine"
+   ]
+  },
+  "The Mystery Deck (stage shape)|archetype 1 (k=3, max)|pure": {
+   "deck": "The Mystery Deck (stage shape)",
+   "key": "mystery",
+   "config": "archetype 1 (k=3, max)",
+   "score_archetype": 8.428141703463135,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "implicit_rules": {
+    "cake": {
+     "kind": "row_pos",
+     "value": 1.0
+    },
+    "runic": {
+     "kind": "mirror",
+     "value": 2.0
+    }
+   },
+   "core_slots": 1,
+   "grid": [
+    ">RR<RR>R<",
+    " ^^ ^^   ",
+    ">D a D>D ",
+    " ^v X^   ",
+    ">RD<^>R< ",
+    "  ^      "
+   ],
+   "archetype": "1",
+   "members": [
+    "ability:Fireball_Base",
+    "ability:Fireball_Volley",
+    "ability:Fireball_Fireshot",
+    "ability:Nova_Base",
+    "ability:Nova_Dot",
+    "ability:Smite_Base",
+    "ability:Smite_Archon",
+    "ability:Smite_Blast_Wave",
+    "ability:Arcane_Base",
+    "ability:Arcane_Rail",
+    "ability:Arcane_Prism",
+    "ability:Chain_Lightning_Base",
+    "ability:Chain_Lightning_Orbs",
+    "ability:Chain_Lightning_Charged_Bolts",
+    "ability:Storm_Arrow_Base",
+    "ability:Toxic_Grenade",
+    "ability:Necromancy_Base",
+    "ability:Necromancy_Archer",
+    "ability:Totem_Mob_Damage"
+   ]
+  },
+  "The Mystery Deck (stage shape)|archetype 2 (k=3, max)|pure": {
+   "deck": "The Mystery Deck (stage shape)",
+   "key": "mystery",
+   "config": "archetype 2 (k=3, max)",
+   "score_archetype": 15.38198297471153,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "implicit_rules": {
+    "cake": {
+     "kind": "row_pos",
+     "value": 1.0
+    },
+    "runic": {
+     "kind": "mirror",
+     "value": 2.0
+    }
+   },
+   "core_slots": 1,
+   "grid": [
+    ">RR<R<>R<",
+    " ^^ ^v   ",
+    ">D a D>D ",
+    " ^v X^   ",
+    ">DD<^>D< ",
+    "  ^      "
+   ],
+   "archetype": "2",
+   "members": [
+    "melee:axe",
+    "ability:Fangs_Base",
+    "ability:Fangs_Maw",
+    "ability:Implode_Life_Tap"
+   ]
+  },
+  "The Mystery Deck (stage shape)|archetype all (k=3, max)|pure": {
+   "deck": "The Mystery Deck (stage shape)",
+   "key": "mystery",
+   "config": "archetype all (k=3, max)",
+   "score_archetype": 8.922644244606747,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "implicit_rules": {
+    "cake": {
+     "kind": "row_pos",
+     "value": 1.0
+    },
+    "runic": {
+     "kind": "mirror",
+     "value": 2.0
+    }
+   },
+   "core_slots": 1,
+   "grid": [
+    ">RR<>R>R<",
+    " ^^ X^   ",
+    ">D a D>D ",
+    " ^v X^   ",
+    ">RD<^>D< ",
+    "  ^      "
+   ],
+   "archetype": "all",
+   "members": [
+    "melee:sword",
+    "melee:axe",
+    "melee:battlestaff",
+    "melee:trident",
+    "ability:Fireball_Base",
+    "ability:Fireball_Volley",
+    "ability:Fireball_Fireshot",
+    "ability:Nova_Base",
+    "ability:Nova_Dot",
+    "ability:Smite_Base",
+    "ability:Smite_Archon",
+    "ability:Smite_Blast_Wave",
+    "ability:Arcane_Base",
+    "ability:Arcane_Rail",
+    "ability:Arcane_Prism",
+    "ability:Chain_Lightning_Base",
+    "ability:Chain_Lightning_Orbs",
+    "ability:Chain_Lightning_Charged_Bolts",
+    "ability:Storm_Arrow_Base",
+    "ability:Ice_Bolt_Base",
+    "ability:Shard_Blizzard",
+    "ability:Javelin_Base",
+    "ability:Javelin_Piercing",
+    "ability:Javelin_Scatter",
+    "ability:Earthquake_Base",
+    "ability:Earthquake_Singularity",
+    "ability:Earthquake_Tremor",
+    "ability:Grenade_Base",
+    "ability:Grenade_Sticky",
+    "ability:Toxic_Grenade",
+    "ability:Necromancy_Base",
+    "ability:Necromancy_Archer",
+    "ability:Dash_Damage",
+    "ability:Fangs_Base",
+    "ability:Fangs_Maw",
+    "ability:Mana_Shield_Implode",
+    "ability:Implode_Life_Tap",
+    "ability:Shield_Bash",
+    "ability:Shield_Bash_Earthshatter",
+    "ability:Shield_Bash_Battering_Ram",
+    "ability:Totem_Mob_Damage",
+    "ability:Shell_Porcupine"
+   ]
+  }
+ },
+ "stages": {
+  "end": [
+   "The Rook Deck (stage shape)|archetype 0 (k=3, end)|pure+color+foil",
+   "The Rook Deck (stage shape)|archetype 1 (k=3, end)|pure+color+foil",
+   "The Rook Deck (stage shape)|archetype 2 (k=3, end)|pure+color+foil",
+   "The Rook Deck (stage shape)|archetype all (k=3, end)|pure+color+foil"
+  ],
+  "max": [
+   "The Mystery Deck (stage shape)|archetype 0 (k=3, max)|pure",
+   "The Mystery Deck (stage shape)|archetype 1 (k=3, max)|pure",
+   "The Mystery Deck (stage shape)|archetype 2 (k=3, max)|pure",
+   "The Mystery Deck (stage shape)|archetype all (k=3, max)|pure"
+  ]
+ }
+}

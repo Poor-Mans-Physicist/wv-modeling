@@ -1,0 +1,17 @@
+{
+  "note": "Measured phase costs of optimizer runs, read by tools/progress_server.py to weight its progress bars and ETA. Kernel phases: secs is wall time of the batch, asleep is the part the machine slept; cost per step = (secs - asleep) * threads / (jobs * iters). The watcher appends finished runs to out/phase_costs.json (seeded from this file). The 2026-10-18 record predates the 2026-10-19 rulings pass (the kernel now costs 1.3-1.7x more per step), and its iters are the standard command's (--iters 360000 --p2-iters 4400000; the bench default 400000), which that log does not print.",
+  "runs": [
+    {
+      "date": "2026-10-18 02:26",
+      "source": "out/run_rework.log + out/unique_bench.log",
+      "threads": 24,
+      "phases": {
+        "phase1": {"jobs": 2688, "iters": 360000, "secs": 347.9, "asleep": 0},
+        "phase2": {"jobs": 672, "iters": 4400000, "secs": 1151.4, "asleep": 0},
+        "eot": {"jobs": 504, "iters": 4400000, "secs": 1215.6, "asleep": 425},
+        "rescore": {"secs": 1.8},
+        "bench": {"jobs": 4578, "iters": 400000, "secs": 894.7, "asleep": 0}
+      }
+    }
+  ]
+}

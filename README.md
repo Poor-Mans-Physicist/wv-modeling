@@ -70,6 +70,7 @@ libs/           Rust kernels
 models/         the model built on each kernel, with its data, docs and validation
   routerunner/    MODEL.md, weights/, sim/run_cells.py, benchmarks/ (panel v2.2, validation)
   builds/         combat model (Python reference), MECHANICS_0.34.1.md, extractors, run.py
+  rework-greed-optimizer/  the same build optimizer on the greed-rework ledger (WV_LEDGER=rework); sources not published
   decks/          deck optimizer CLI (snapshot of WoldsVaultsDeckOptimizer), MODELING_CHOICES.md
 roomlab/        room DSL, contract linter, palette interpreter, 3D preview; examples/extraction1
 playbooks/      task recipes, one per kind of question

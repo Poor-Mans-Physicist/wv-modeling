@@ -1,0 +1,16 @@
+[package]
+name = "wvk"
+version = "0.1.0"
+edition = "2021"
+description = "Search kernel for wv-combat-model: build evaluation and simulated annealing"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+rayon = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

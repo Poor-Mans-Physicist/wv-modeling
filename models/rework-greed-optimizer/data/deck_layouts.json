@@ -1,0 +1,136 @@
+{
+ "_source": "DeckFAST tagged kernel via extract/deckfast_run_layouts.py",
+ "decks": {
+  "The Anvil Deck|no greed": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "no greed",
+   "ndm_deckfast": 875.14,
+   "cores": [
+    "color",
+    "deluxe_core",
+    "pure"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 4,
+   "grid": [
+    "RRRRRRRRR",
+    "  DSSDD  ",
+    "   SSD   ",
+    " RRRDRDR "
+   ]
+  },
+  "The Anvil Deck|unconstrained": {
+   "deck": "The Anvil Deck",
+   "key": "anvil",
+   "config": "unconstrained",
+   "ndm_deckfast": 3298.84,
+   "cores": [
+    "color",
+    "deluxe_core",
+    "foil",
+    "pure"
+   ],
+   "implicits": [
+    "anvil"
+   ],
+   "core_slots": 4,
+   "grid": [
+    "D>R<v>R<D",
+    "  ^>S<^  ",
+    "   >S<   ",
+    " >R<^>R< "
+   ]
+  },
+  "The Rook Deck|unconstrained": {
+   "deck": "The Rook Deck",
+   "key": "wall",
+   "config": "unconstrained",
+   "ndm_deckfast": 4352.4,
+   "cores": [
+    "color",
+    "foil",
+    "pure"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "v C C C v",
+    "C ^ ^ ^ C",
+    "^ v v v ^",
+    "v C C C v",
+    "C ^ ^ ^ C"
+   ]
+  },
+  "The Rook Deck|min 8 reg": {
+   "deck": "The Rook Deck",
+   "key": "wall",
+   "config": "min 8 reg",
+   "ndm_deckfast": 4352.4,
+   "cores": [
+    "color",
+    "foil",
+    "pure"
+   ],
+   "implicits": [
+    "wall"
+   ],
+   "core_slots": 3,
+   "grid": [
+    "a v a v a",
+    "v C v C v",
+    "C ^ C ^ C",
+    "^ v ^ v v",
+    "C C C C C",
+    "^ ^ ^ ^ ^"
+   ]
+  },
+  "The Mystery Deck|unconstrained": {
+   "deck": "The Mystery Deck",
+   "key": "mystery",
+   "config": "unconstrained",
+   "ndm_deckfast": 9036.8,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "core_slots": 1,
+   "grid": [
+    ">R<v>R<",
+    " ^>S<^ ",
+    "R>Xa>R<",
+    "^v^X<^ ",
+    ">R<^>R<"
+   ]
+  },
+  "The Mystery Deck|min 8 reg": {
+   "deck": "The Mystery Deck",
+   "key": "mystery",
+   "config": "min 8 reg",
+   "ndm_deckfast": 8942.720000000001,
+   "cores": [
+    "pure"
+   ],
+   "implicits": [
+    "cake",
+    "runic"
+   ],
+   "core_slots": 1,
+   "grid": [
+    ">Rvv>R<",
+    " >SS<^ ",
+    "R<^a>R<",
+    "^v>X<^ ",
+    ">R<^>R<"
+   ]
+  }
+ }
+}

@@ -1,0 +1,9 @@
+{
+  "values": {
+    "mystery": {
+      "structural_cores_used": 1,
+      "implicits": ["cake", "runic"],
+      "layout": ["OOOOOOO", "XOOOOOX", "OOOAOOO", "OOOOOOX", "OOOOOOO"]
+    }
+  }
+}

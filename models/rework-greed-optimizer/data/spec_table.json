@@ -1,0 +1,3723 @@
+{
+ "specs": {
+  "Fireball_Base": {
+   "label": "Fireball",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {
+    "rework": {
+     "iframe": "free"
+    }
+   },
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Fireball_Volley": {
+   "label": "Fireball Volley",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {
+    "rework": {
+     "iframe": "free"
+    }
+   },
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Fireball_Fireshot": {
+   "label": "Fireshot",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+FIRESHOT",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": true,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": true,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Fireball",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Nova_Base": {
+   "label": "Nova",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Nova_Dot": {
+   "label": "Poison Nova (DoT)",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "DOT",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationSeconds",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationSeconds",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Smite_Base": {
+   "label": "Smite",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+SMITE_BASE",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": true,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    },
+    "rework": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    }
+   }
+  },
+  "Smite_Archon": {
+   "label": "Smite (Archon)",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+SMITE",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalDurabilityWearReduction",
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    },
+    "rework": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalDurabilityWearReduction",
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    }
+   }
+  },
+  "Smite_Blast_Wave": {
+   "label": "Smite (Blast Wave)",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE+SMITE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "finesseChanceMultiplier",
+      "intervalTicks",
+      "knockbackStrength",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    },
+    "rework": {
+     "skill": "Smite",
+     "tiers": 30,
+     "config_keys": [
+      "additionalManaPerBolt",
+      "color",
+      "cooldownTicks",
+      "finesseChanceMultiplier",
+      "intervalTicks",
+      "knockbackStrength",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "additionalManaPerBolt"
+     ]
+    }
+   }
+  },
+  "Arcane_Base": {
+   "label": "Arcane Beam",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+EFFECT",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": true,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealt",
+      "range"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCostPerSecond",
+      "percentAbilityPowerDealt",
+      "range"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Arcane_Rail": {
+   "label": "Arcane Rail",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+ARCANE_RAIL",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": true,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": true,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Arcane_Prism": {
+   "label": "Arcane Prism",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+EFFECT+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "beamWidth",
+      "cooldownTicks",
+      "durationTicks",
+      "intervalTicks",
+      "manaCost",
+      "maxTargets",
+      "percentAbilityPowerDealt",
+      "radius",
+      "range"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Arcane",
+     "tiers": 30,
+     "config_keys": [
+      "beamWidth",
+      "cooldownTicks",
+      "durationTicks",
+      "intervalTicks",
+      "manaCost",
+      "maxTargets",
+      "percentAbilityPowerDealt",
+      "radius",
+      "range"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Chain_Lightning_Base": {
+   "label": "Chain Lightning",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "chainRange",
+      "cooldownTicks",
+      "distance",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "chainRange",
+      "cooldownTicks",
+      "distance",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Chain_Lightning_Orbs": {
+   "label": "Lightning Orbs",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "hitRadius",
+      "manaCost",
+      "orbSpeed",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "hitRadius",
+      "manaCost",
+      "orbSpeed",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Chain_Lightning_Charged_Bolts": {
+   "label": "Charged Bolts",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "boltCount",
+      "chainRange",
+      "cooldownTicks",
+      "distance",
+      "fullDamageHitsPerTarget",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "repeatHitDamageMultiplier",
+      "spreadDegrees",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Chain_Lightning",
+     "tiers": 30,
+     "config_keys": [
+      "boltCount",
+      "chainRange",
+      "cooldownTicks",
+      "distance",
+      "fullDamageHitsPerTarget",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "repeatHitDamageMultiplier",
+      "spreadDegrees",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Storm_Arrow_Base": {
+   "label": "Storm Arrow",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+SMITE",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Storm_Arrow",
+     "tiers": 30,
+     "config_keys": [
+      "cloudDuration",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Storm_Arrow",
+     "tiers": 30,
+     "config_keys": [
+      "cloudDuration",
+      "cooldownTicks",
+      "intervalTicks",
+      "manaCost",
+      "percentAbilityPowerDealtMax",
+      "percentAbilityPowerDealtMin",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Ice_Bolt_Base": {
+   "label": "Ice Bolt",
+   "scaling": "AD",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": true,
+    "m_baked": true,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {
+    "etching_ice_bolt_lucky": {
+     "name": "arrow (Lucky Bolt)",
+     "aoe_flag": false,
+     "m_baked": false
+    }
+   },
+   "leech_ok": "lucky_bolt",
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": "lucky_bolt",
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Ice_Bolt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "damagePerBolt",
+      "durationTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "splinterChance",
+      "splinterDamageMultiplier",
+      "splinterRange",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Ice_Bolt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "damagePerBolt",
+      "durationTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "splinterChance",
+      "splinterDamageMultiplier",
+      "splinterRange",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Shard_Blizzard": {
+   "label": "Shard Blizzard",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": true,
+    "m_baked": true,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "HYPOTHERMIA",
+     "share",
+     "Shard Blizzard"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Ice_Bolt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cloudDuration",
+      "cooldownTicks",
+      "damagePerShard",
+      "frostbiteChance",
+      "frostbiteDuration",
+      "intervalHypothermiaTicks",
+      "intervalTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "slowDuration",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Ice_Bolt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cloudDuration",
+      "cooldownTicks",
+      "damagePerShard",
+      "frostbiteChance",
+      "frostbiteDuration",
+      "intervalHypothermiaTicks",
+      "intervalTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "slowDuration",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Javelin_Base": {
+   "label": "Javelin",
+   "scaling": "AD",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "JAVELIN",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "javelin",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "knockback",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "knockback",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Javelin_Piercing": {
+   "label": "Piercing Javelin",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "JAVELIN",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "javelin",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "piercing",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "piercing",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Javelin_Scatter": {
+   "label": "Scatter Javelin",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "JAVELIN",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "javelin",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "numberOfBounces",
+      "numberOfJavelins",
+      "percentAttackDamageDealt",
+      "piercing",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Javelin",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "numberOfBounces",
+      "numberOfJavelins",
+      "percentAttackDamageDealt",
+      "piercing",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Earthquake_Base": {
+   "label": "Earthquake",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Earthquake_Singularity": {
+   "label": "Earthquake (Singularity)",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "pullStrength",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "pullStrength",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Earthquake_Tremor": {
+   "label": "Earthquake (Tremor)",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Earthquake",
+     "tiers": 30,
+     "config_keys": [
+      "blockDestructionChance",
+      "blockReplacementChance",
+      "cooldownTicks",
+      "delayTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "shockCount",
+      "shockIntervalTicks",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Grenade_Base": {
+   "label": "Grenade",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Grenade_Sticky": {
+   "label": "Sticky Grenade",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+AOE",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "sticky",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "duration",
+      "manaCost",
+      "percentAttackDamageDealt",
+      "radius",
+      "sticky",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Toxic_Grenade": {
+   "label": "Toxic Grenade (DoT)",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "DOT",
+    "ap": true,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "shotgun",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "poisonTicks",
+      "radius",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Grenade",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "poisonTicks",
+      "radius",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Necromancy_Base": {
+   "label": "Necromancy (Warriors)",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+NECRO",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "CURSE",
+     "always",
+     "Necromancy"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Necromancy_Archer": {
+   "label": "Necromancy (Archers)",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+NECRO",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "CURSE",
+     "always",
+     "Necromancy"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Dash_Damage": {
+   "label": "Dash Damage",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": true,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "zero",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Dash",
+     "tiers": 30,
+     "config_keys": [
+      "attackDamagePercentPerDash",
+      "cooldownTicks",
+      "extraDistance",
+      "manaCost"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Dash",
+     "tiers": 30,
+     "config_keys": [
+      "attackDamagePercentPerDash",
+      "cooldownTicks",
+      "extraDistance",
+      "manaCost"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Fangs_Base": {
+   "label": "Wall of Fangs",
+   "scaling": "AD",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "FANG",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": true,
+    "lucky": true,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "reset",
+    "echo_ok": false,
+    "rampage": true,
+    "double_ok": true
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": true,
+   "pd_hold": false,
+   "spectral": true,
+   "cast_debuffs": [],
+   "fang_hits": "wall",
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Fangs",
+     "tiers": 30,
+     "config_keys": [
+      "baseDamage",
+      "cooldownTicks",
+      "damageMultiplier",
+      "executeThreshold",
+      "manaCost",
+      "radius",
+      "waveCount",
+      "waveDelay"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Fangs",
+     "tiers": 30,
+     "config_keys": [
+      "baseDamage",
+      "cooldownTicks",
+      "damageMultiplier",
+      "executeThreshold",
+      "manaCost",
+      "radius",
+      "waveCount",
+      "waveDelay"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Fangs_Maw": {
+   "label": "Hungry Maw",
+   "scaling": "AD",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "FANG",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": true,
+    "lucky": true,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "reset",
+    "echo_ok": false,
+    "rampage": true,
+    "double_ok": true
+   },
+   "hit_variants": {},
+   "leech_ok": true,
+   "lucky_ok": true,
+   "pd_hold": false,
+   "spectral": true,
+   "cast_debuffs": [
+    [
+     "SLOWNESS",
+     "maw_slowness",
+     "Fangs Maw"
+    ]
+   ],
+   "fang_hits": "maw",
+   "reach": "fang_line",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Fangs",
+     "tiers": 30,
+     "config_keys": [
+      "baseDamage",
+      "cooldownTicks",
+      "damageMultiplier",
+      "effectAmplifier",
+      "heartFragmentChance",
+      "manaCost",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Fangs",
+     "tiers": 30,
+     "config_keys": [
+      "baseDamage",
+      "cooldownTicks",
+      "damageMultiplier",
+      "effectAmplifier",
+      "heartFragmentChance",
+      "manaCost",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Mana_Shield_Implode": {
+   "label": "Implode",
+   "scaling": "Mana",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Implode",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "percentManaDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    },
+    "rework": {
+     "skill": "Implode",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "percentManaDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    }
+   }
+  },
+  "Implode_Life_Tap": {
+   "label": "Life Tap",
+   "scaling": "HP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "radius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Implode",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damagePerHealth",
+      "percentHealthDrained",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    },
+    "rework": {
+     "skill": "Implode",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damagePerHealth",
+      "percentHealthDrained",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    }
+   }
+  },
+  "Shield_Bash": {
+   "label": "Shield Bash",
+   "scaling": "AD+Block",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": true,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "zero",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Shield_Bash_Earthshatter": {
+   "label": "Shield Bash (Earthshatter)",
+   "scaling": "AD+Block",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": true,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "zero",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Shield_Bash_Battering_Ram": {
+   "label": "Shield Bash (Battering Ram)",
+   "scaling": "AD+Thorns",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AOE",
+    "ap": false,
+    "aoe_flag": true,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": true,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "zero",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks",
+      "thornsDamageScalar"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Retribution",
+     "tiers": 30,
+     "config_keys": [
+      "blockChanceDamageScalar",
+      "cooldownTicks",
+      "damageDistance",
+      "knockbackStrength",
+      "manaCost",
+      "stunChance",
+      "stunDurationTicks",
+      "thornsDamageScalar"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Totem_Mob_Damage": {
+   "label": "Totem (Mob Damage)",
+   "scaling": "AP",
+   "tags": [
+    "aoe"
+   ],
+   "hit": {
+    "name": "AP+TOTEM",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": true,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {
+    "etching_totem_mob_damage_ad": {
+     "name": "TOTEM",
+     "ap": false
+    }
+   },
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "MARK",
+     "totem_interval",
+     "Totem of Hatred"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": "self_radius",
+   "reach_key": "totemEffectRadius",
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDamageIntervalTicks",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemPercentDamagePerInterval"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDamageIntervalTicks",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemPercentDamagePerInterval"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Shell_Porcupine": {
+   "label": "Thorns (Shell Porcupine)",
+   "scaling": "Thorns",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "THORNS",
+    "ap": false,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": true,
+    "rampage": false,
+    "double_ok": true
+   },
+   "hit_variants": {
+    "lucky_thorns": {
+     "lucky": true
+    }
+   },
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": "zero",
+   "reach_key": null,
+   "buff": "thorns_toggle",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Shell",
+     "tiers": 30,
+     "config_keys": [
+      "additionalDurabilityWearReduction",
+      "additionalManaPerHit",
+      "additionalThornsDamagePercent",
+      "cooldownTicks",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Shell",
+     "tiers": 30,
+     "config_keys": [
+      "additionalDurabilityWearReduction",
+      "additionalManaPerHit",
+      "additionalThornsDamagePercent",
+      "cooldownTicks",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Taunt_Base": {
+   "label": "Taunt",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "boss_vulnerable",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Taunt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Taunt",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Totem_Player_Damage": {
+   "label": "Totem (Player Damage)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "registry_add",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemPlayerDamagePercent"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemPlayerDamagePercent"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Rampage_Base": {
+   "label": "Rampage",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "rampage",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Rampage_Berserker": {
+   "label": "Rampage (Berserker)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "rampage",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond",
+      "manaRampPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "manaRampPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond",
+      "manaRampPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond",
+      "manaRampPerSecond"
+     ]
+    }
+   }
+  },
+  "Rampage_Bloodlust": {
+   "label": "Rampage (Bloodlust)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "rampage",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond",
+      "manaRefund",
+      "maxStacks",
+      "speedPerStack",
+      "stackDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "manaCostPerSecond",
+      "manaRefund",
+      "maxStacks",
+      "speedPerStack",
+      "stackDurationTicks"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Rampage_Instinct": {
+   "label": "Rampage (Instinct)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "rampage",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "luckyHitChance",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Rampage",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "damageIncrease",
+      "luckyHitChance",
+      "manaCostPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Battle_Cry_Base": {
+   "label": "Battle Cry",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "battle_cry_ad",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "attackDamagePerStack",
+      "cooldownTicks",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "attackDamagePerStack",
+      "cooldownTicks",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Battle_Cry_Spectral_Strike": {
+   "label": "Battle Cry (Spectral Strike)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "spectral_stacks",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "abilityPowerPerStack",
+      "cooldownTicks",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "abilityPowerPerStack",
+      "cooldownTicks",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Battle_Cry_Lucky_Strike": {
+   "label": "Battle Cry (Lucky Strike)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "battle_cry_lucky",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "luckyHitChancePerStack",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Battle_Cry",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "luckyHitChancePerStack",
+      "manaCost",
+      "maxStacksTotal",
+      "maxStacksUsedPerHit",
+      "radius",
+      "stackDuration"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Colossus_Base": {
+   "label": "Colossus",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "resistance",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Colossus",
+     "tiers": 30,
+     "config_keys": [
+      "additionalResistance",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "size"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Colossus",
+     "tiers": 30,
+     "config_keys": [
+      "additionalResistance",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "size"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Concentrate_Base": {
+   "label": "Concentrate",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "empower",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Expunge",
+     "tiers": 30,
+     "config_keys": [
+      "amplitudeScaleChance",
+      "baseAmplitude",
+      "baseEffectDuration",
+      "cooldownTicks",
+      "manaCost",
+      "particleDelay",
+      "particleSteps",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Expunge",
+     "tiers": 30,
+     "config_keys": [
+      "amplitudeScaleChance",
+      "baseAmplitude",
+      "baseEffectDuration",
+      "cooldownTicks",
+      "manaCost",
+      "particleDelay",
+      "particleSteps",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Totem_Mana_Regen": {
+   "label": "Totem (Mana Regen)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "mana_regen",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemManaRegenPercent"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond",
+      "totemManaRegenPercent"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Nova_Slow": {
+   "label": "Frost Nova",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "HYPOTHERMIA",
+     "share",
+     "Nova Slow"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "boss_hypothermia",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "damageIntervalTicks",
+      "durationTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Nova",
+     "tiers": 30,
+     "config_keys": [
+      "amplifier",
+      "cooldownTicks",
+      "damageIntervalTicks",
+      "durationTicks",
+      "knockbackStrengthMultiplier",
+      "manaCost",
+      "percentAbilityPowerDealt",
+      "radius"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Necromancy_Golem": {
+   "label": "Necromancy (Golem)",
+   "scaling": "AP",
+   "tags": [
+    "single"
+   ],
+   "hit": {
+    "name": "AP+NECRO",
+    "ap": true,
+    "aoe_flag": false,
+    "normal": false,
+    "lucky": false,
+    "di_baked": false,
+    "m_baked": false,
+    "iframe": "plain",
+    "echo_ok": false,
+    "rampage": false,
+    "double_ok": false
+   },
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [
+    [
+     "CURSE",
+     "always",
+     "Necromancy"
+    ]
+   ],
+   "fang_hits": null,
+   "reach": "projectile",
+   "reach_key": null,
+   "buff": null,
+   "secondary_eligible": true,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Necromancy",
+     "tiers": 30,
+     "config_keys": [
+      "aoeDamageMultiplier",
+      "aoeRadius",
+      "attackIntervalTicks",
+      "cooldownTicks",
+      "curseDurationTicks",
+      "distance",
+      "golemScalePerStack",
+      "manaCost",
+      "minionHealthMultiplier",
+      "minionMovementSpeed",
+      "minionScale",
+      "ownerMovementSpeedMultiplier",
+      "percentAbilityPowerDealt",
+      "projectileColor",
+      "soulRequirement",
+      "summonCap",
+      "summonLifetimeTicks",
+      "throwPower"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Empower_Base": {
+   "label": "Empower",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "move_speed",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Empower",
+     "tiers": 30,
+     "config_keys": [
+      "buffRadius",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCostPerSecond",
+      "speedPercentAdded"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Empower",
+     "tiers": 30,
+     "config_keys": [
+      "buffRadius",
+      "cooldownTicks",
+      "durationTicks",
+      "manaCostPerSecond",
+      "speedPercentAdded"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Empower_Slowness_Aura": {
+   "label": "Empower (Slowness Aura)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "boss_slowness",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Empower",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCostPerSecond",
+      "radius",
+      "slownessAmplifier"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    },
+    "rework": {
+     "skill": "Empower",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCostPerSecond",
+      "radius",
+      "slownessAmplifier"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCostPerSecond"
+     ]
+    }
+   }
+  },
+  "Sneaky_Getaway": {
+   "label": "Sneaky Getaway",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "dodge",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Colossus",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "size",
+      "speedPercentAdded"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Colossus",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "manaCost",
+      "size",
+      "speedPercentAdded"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Totem_Base": {
+   "label": "Totem (Rejuvenation)",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "heal",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Totem",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "manaCost",
+      "totemDurationTicks",
+      "totemEffectRadius",
+      "totemHealthPerSecond"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "Mana_Shield_Base": {
+   "label": "Mana Shield",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "absorb_pool",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "Mana_Shield",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "healthPoints",
+      "manaCost"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    },
+    "rework": {
+     "skill": "Mana_Shield",
+     "tiers": 30,
+     "config_keys": [
+      "cooldownTicks",
+      "durationTicks",
+      "healthPoints",
+      "manaCost"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": [
+      "manaCost"
+     ]
+    }
+   }
+  },
+  "UltimateShield_Base": {
+   "label": "Ultimate Shield",
+   "scaling": null,
+   "tags": [],
+   "hit": null,
+   "hit_variants": {},
+   "leech_ok": false,
+   "lucky_ok": false,
+   "pd_hold": false,
+   "spectral": false,
+   "cast_debuffs": [],
+   "fang_hits": null,
+   "reach": null,
+   "reach_key": null,
+   "buff": "absorb_mana",
+   "secondary_eligible": false,
+   "catalog": {
+    "0.34.1": {
+     "skill": "UltimateShield",
+     "tiers": 30,
+     "config_keys": [
+      "baseManaDrainPerTick",
+      "cooldownTicks",
+      "manaDrainRampPerSecond",
+      "manaPerDamageScalar",
+      "maxManaDrainPerTick",
+      "percentageDamageAbsorbed"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    },
+    "rework": {
+     "skill": "UltimateShield",
+     "tiers": 30,
+     "config_keys": [
+      "baseManaDrainPerTick",
+      "cooldownTicks",
+      "manaDrainRampPerSecond",
+      "manaPerDamageScalar",
+      "maxManaDrainPerTick",
+      "percentageDamageAbsorbed"
+     ],
+     "cooldown_key": "cooldownTicks",
+     "mana_keys": []
+    }
+   }
+  }
+ },
+ "weapon_combos": {
+  "sword": [
+   1.0,
+   1.0,
+   1.25
+  ],
+  "axe": [
+   1.0,
+   1.0
+  ],
+  "battlestaff": [
+   0.8,
+   1.0,
+   1.2,
+   1.4,
+   0.8,
+   0.8
+  ],
+  "trident": [
+   1.0
+  ]
+ }
+}
