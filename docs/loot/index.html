@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chest Roll Map</title>
+<meta name="description" content="Expected omega and mythic chest rolls per 1000 chests across Item Quantity and Item Rarity, for mapped and unmapped Wold's Vaults vaults.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #060608;
+  --s1: #0d0d12;
+  --s2: #13131a;
+  --s3: #1b1a24;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-2: rgba(255, 255, 255, 0.13);
+  --ink: #f2f1f6;
+  --ink-2: #b9b8c6;
+  --muted: #7d7c8c;
+  --gold: #ffaa00;
+  --gold-2: #ffcf6a;
+  --omega: #4ade80;
+  --mythic: #c084fc;
+  --accent: #60a5fa;
+  --font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.45; }
+body { background-image: radial-gradient(1200px 600px at 70% -10%, #15122a 0%, transparent 60%); min-height: 100vh; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }
+
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; flex-wrap: wrap; }
+.brand { text-align: center; flex: 1 1 auto; order: 2; }
+.brand h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
+.brand p { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+.topbar .left { order: 1; }
+.topbar .right { order: 3; }
+
+.seg { display: inline-flex; background: var(--s2); border: 1px solid var(--line-2); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { appearance: none; border: 0; background: transparent; color: var(--ink-2); font: 600 13px var(--font); padding: 7px 14px; border-radius: 7px; cursor: pointer; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--s3); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+.seg.small button { font-size: 12px; padding: 5px 10px; }
+.seg-label { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+
+.howto { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 4px 0 14px; }
+.step { display: flex; gap: 10px; align-items: flex-start; background: var(--s1); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.step b { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--s3); color: var(--gold-2); display: grid; place-items: center; font-size: 12px; }
+.step span { color: var(--ink-2); font-size: 12.5px; }
+.step strong { color: var(--ink); font-weight: 600; }
+
+.panel { background: var(--s1); border: 1px solid var(--line); border-radius: 14px; }
+.controls { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 0; margin-bottom: 14px; }
+.ctrl { padding: 14px 16px; border-right: 1px solid var(--line); min-width: 0; }
+.ctrl:last-child { border-right: 0; }
+.ctrl h2 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; }
+.ctrl h2 .val { font-family: var(--mono); font-size: 12.5px; color: var(--ink); text-transform: none; letter-spacing: 0; }
+
+.range2 { position: relative; height: 28px; }
+.range2 .track { position: absolute; left: 0; right: 0; top: 12px; height: 4px; border-radius: 2px; background: var(--s3); }
+.range2 .fill { position: absolute; top: 12px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-2)); }
+.range2 input { position: absolute; left: 0; top: 0; width: 100%; height: 28px; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; }
+.range2 input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); cursor: grab; }
+.range2 input::-moz-range-thumb { pointer-events: auto; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); cursor: grab; }
+.range2 input::-webkit-slider-runnable-track { background: none; }
+.range2 input::-moz-range-track { background: none; }
+.ticks { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+.presets { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.chip { appearance: none; border: 1px solid var(--line-2); background: var(--s2); color: var(--ink-2); font: 500 11.5px var(--font); padding: 3px 9px; border-radius: 999px; cursor: pointer; }
+.chip:hover { color: var(--ink); border-color: rgba(255,255,255,0.25); }
+
+.query { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+.inputs { display: grid; gap: 8px; }
+.field { display: flex; align-items: center; gap: 8px; }
+.field label { width: 26px; font-weight: 700; font-size: 12px; color: var(--ink-2); }
+.field .box { display: flex; align-items: center; background: var(--s2); border: 1px solid var(--line-2); border-radius: 8px; padding: 0 8px; }
+.field .box:focus-within { border-color: var(--gold); }
+.field input { width: 78px; background: transparent; border: 0; color: var(--ink); font: 600 14px var(--mono); padding: 7px 0; outline: none; }
+.field .box span { color: var(--muted); font-size: 12px; }
+.result { text-align: right; }
+.result .score { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.result .split { font-size: 15px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.omega { color: var(--omega); }
+.mythic { color: var(--mythic); }
+.result .sub { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+.result .meta { display: flex; justify-content: flex-end; gap: 12px; margin-top: 6px; font-size: 11.5px; color: var(--ink-2); flex-wrap: wrap; }
+.result .meta em { font-style: normal; color: var(--muted); }
+
+.plotwrap { position: relative; padding: 8px 8px 4px; }
+#plot { width: 100%; height: 640px; }
+.plothead { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px 0; gap: 10px; flex-wrap: wrap; }
+.plothead .title { font-weight: 700; font-size: 13.5px; }
+.plothead .title small { color: var(--muted); font-weight: 500; margin-left: 6px; }
+.plothead .hint { color: var(--muted); font-size: 12px; }
+
+.notes { margin-top: 14px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
+.notes .panel { padding: 14px 16px; }
+.notes h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.notes p, .notes li { color: var(--ink-2); font-size: 12.5px; margin: 0 0 6px; }
+.notes ul { margin: 0; padding-left: 18px; }
+.notes code { font-family: var(--mono); font-size: 11.5px; color: var(--ink); background: var(--s2); padding: 1px 5px; border-radius: 4px; }
+.tenos { margin-top: 10px; }
+footer { color: var(--muted); font-size: 11.5px; text-align: center; margin-top: 18px; }
+footer a { color: var(--ink-2); }
+
+@media (max-width: 980px) {
+  .howto { grid-template-columns: 1fr 1fr; }
+  .controls { grid-template-columns: 1fr 1fr; }
+  .ctrl.q { grid-column: 1 / -1; border-top: 1px solid var(--line); border-right: 0; }
+  .notes { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .brand { order: 0; flex-basis: 100%; }
+  .howto, .controls { grid-template-columns: 1fr; }
+  .ctrl { border-right: 0; border-bottom: 1px solid var(--line); }
+  .query { grid-template-columns: 1fr; }
+  .result { text-align: left; }
+  .result .meta { justify-content: flex-start; }
+  #plot { height: 460px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <div class="left">
+      <span class="seg-label">View</span>
+      <div class="seg" id="viewSeg" role="group" aria-label="Graph view">
+        <button data-v="2d" aria-pressed="true">2D heat map</button>
+        <button data-v="3d" aria-pressed="false">3D surface</button>
+      </div>
+    </div>
+    <div class="brand">
+      <h1>Chest Roll Map</h1>
+      <p>Omega + 5 × mythic rolls per 1000 chests, by Item Quantity and Item Rarity</p>
+    </div>
+    <div class="right">
+      <span class="seg-label" style="text-align:right">Vault type</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="Vault type">
+        <button data-m="unmapped" aria-pressed="true">Unmapped</button>
+        <button data-m="mapped" aria-pressed="false">Mapped</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="howto" aria-label="How to use">
+    <div class="step"><b>1</b><span><strong>Pick the vault type</strong> (top right) and a <strong>2D or 3D view</strong> (top left).</span></div>
+    <div class="step"><b>2</b><span><strong>Drag the range sliders</strong> to zoom the IQ / IR window. The graph and its colors rescale to fit.</span></div>
+    <div class="step"><b>3</b><span><strong>Hover the graph</strong> for the expected rolls at any point. Drag to pan (2D) or rotate (3D).</span></div>
+    <div class="step"><b>4</b><span><strong>Type your IQ and IR</strong> (or click the 2D map) to see your exact score and its breakdown.</span></div>
+  </section>
+
+  <section class="panel controls">
+    <div class="ctrl">
+      <h2>Item Quantity window <span class="val" id="iqVal"></span></h2>
+      <div class="range2" id="iqRange">
+        <div class="track"></div><div class="fill"></div>
+        <input type="range" min="0" max="25000" step="50" aria-label="IQ minimum">
+        <input type="range" min="0" max="25000" step="50" aria-label="IQ maximum">
+      </div>
+      <div class="ticks"><span>0%</span><span>12,500%</span><span>25,000%</span></div>
+      <div class="presets" data-axis="iq">
+        <button class="chip" data-r="0,1000">0–1k</button>
+        <button class="chip" data-r="0,4000">0–4k</button>
+        <button class="chip" data-r="0,25000">Full</button>
+      </div>
+    </div>
+    <div class="ctrl">
+      <h2>Item Rarity window <span class="val" id="irVal"></span></h2>
+      <div class="range2" id="irRange">
+        <div class="track"></div><div class="fill"></div>
+        <input type="range" min="0" max="25000" step="50" aria-label="IR minimum">
+        <input type="range" min="0" max="25000" step="50" aria-label="IR maximum">
+      </div>
+      <div class="ticks"><span>0%</span><span>12,500%</span><span>25,000%</span></div>
+      <div class="presets" data-axis="ir">
+        <button class="chip" data-r="0,2000">0–2k</button>
+        <button class="chip" data-r="0,10000">0–10k</button>
+        <button class="chip" data-r="0,25000">Full</button>
+      </div>
+    </div>
+    <div class="ctrl q">
+      <h2>Your stats</h2>
+      <div class="query">
+        <div class="inputs">
+          <div class="field"><label for="qIQ">IQ</label><div class="box"><input id="qIQ" type="number" min="0" max="25000" step="10" value="500"><span>%</span></div></div>
+          <div class="field"><label for="qIR">IR</label><div class="box"><input id="qIR" type="number" min="0" max="25000" step="10" value="1000"><span>%</span></div></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="score" id="rScore">–</div>
+          <div class="split" id="rSplit"></div>
+          <div class="sub" id="rSub"></div>
+          <div class="meta" id="rMeta"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="plothead">
+      <div class="title" id="plotTitle"></div>
+      <div class="hint" id="plotHint"></div>
+    </div>
+    <div class="plotwrap"><div id="plot"></div></div>
+  </section>
+
+  <section class="notes">
+    <div class="panel">
+      <h3>How the score is computed</h3>
+      <p>Each chest rolls a base count <code>b</code> of 12–15 (equally likely), multiplied by <code>1 + 1.1·ln(1 + IQ)</code> and capped at 54 rolls. Each roll picks one of the chest's pools by weight; pools above the common one scale with rarity.</p>
+      <ul>
+        <li><strong>Unmapped</strong>: four pools (base weights 70/80, 20, 8 or 4, 2). Every non-common pool scales by <code>1 + IR</code>, so the omega share levels off near 2/30. There is no mythic pool, so the score is omega rolls only.</li>
+        <li><strong>Mapped</strong>: the same pools plus a mythic pool (weight 0.00445). Omega scales by <code>(1+IR)^(1 + 0.12·ramp)</code> and mythic by <code>(1+IR)^(1.70 + 0.151·ramp)</code>, with <code>ramp = (log₁₀(1+IR) / log₁₀ 201)^1.4</code>.</li>
+        <li>Score = omega rolls + 5 × mythic rolls per 1000 chests, averaged over wooden, gilded, living and ornate chests (the deck optimizer's Loot metric).</li>
+      </ul>
+      <div class="tenos">
+        <span class="seg-label">Tenos chest nodes</span>
+        <div class="seg small" id="tenosSeg" role="group" aria-label="Tenos chest nodes">
+          <button data-t="none" aria-pressed="true">None (cap 54)</button>
+          <button data-t="el" aria-pressed="false">Expert Looter (cap 58)</button>
+          <button data-t="mc" aria-pressed="false">+ Massive Chests (cap 78, IR ×0.5)</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>What this leaves out</h3>
+      <ul>
+        <li>IQ and IR are your <strong>total</strong> values as the chest sees them, in percent (+500% = 500).</li>
+        <li>Strongboxes, treasure / god chests and coin piles are not included.</li>
+        <li>No greed medallion, Aspect of Treasure, Luck potions or crystal / map loot modifiers beyond what you type in.</li>
+        <li>Massive Chests is modelled as intended (+20 cap, rarity halved), matching the deck optimizer.</li>
+        <li>Past about +2,290% IQ every chest hits the roll cap, so more IQ adds nothing.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Formulas from the Wold's Vaults addon (<code>MythicLootScaling</code>, <code>MixinTieredLootTableGenerator</code>) and the pack's chest loot tables. Part of <a href="../">wv-modeling</a>.</footer>
+</div>
+
+<script>
+(() => {
+  const AX_MAX = 25000;
+  const BASE_ROLLS = [12, 13, 14, 15];
+  const CHESTS = [[70, 20, 8, 2], [70, 20, 4, 2], [70, 20, 8, 2], [80, 20, 8, 2]];
+  const MYTHIC_W = 0.00445;
+  const MYTHIC_MULT = 5;
+  const LREF = Math.log10(201);
+  const TENOS = { none: { cap: 54, rmul: 1, label: "no Tenos chest nodes" }, el: { cap: 58, rmul: 1, label: "Expert Looter" }, mc: { cap: 78, rmul: 0.5, label: "Expert Looter + Massive Chests" } };
+  const COLORSCALE = [
+    [0.00, "#4a0008"], [0.10, "#9b0d13"], [0.22, "#e2321c"], [0.34, "#f47d1f"], [0.46, "#f6c82a"],
+    [0.58, "#8fd14a"], [0.70, "#25b37a"], [0.80, "#1d9ad6"], [0.90, "#2a5bd8"], [1.00, "#0b1f7a"],
+  ];
+  const GRID_2D = 161, GRID_3D = 81;
+
+  const state = { mode: "unmapped", view: "2d", tenos: "none", iq: [0, 4000], ir: [0, 10000], q: { iq: 500, ir: 1000 } };
+
+  function poolScale(i, r, mapped) {
+    if (i === 0) return 1;
+    if (r <= 0 || !mapped) return 1 + r;
+    const ramp = Math.pow(Math.log10(1 + r) / LREF, 1.4);
+    if (i === 3) return Math.pow(1 + r, 1 + 0.12 * ramp);
+    if (i === 4) return Math.pow(1 + r, 1.70 + 0.151 * ramp);
+    return 1 + r;
+  }
+
+  function rollsPerChest(iqPct, cap) {
+    const m = 1 + 1.1 * Math.log(1 + Math.max(iqPct, 0) / 100);
+    let s = 0;
+    for (const b of BASE_ROLLS) { const f = b * m; s += Math.floor(f) >= cap ? cap : f; }
+    return s / BASE_ROLLS.length;
+  }
+
+  function evaluate(iqPct, irPct) {
+    const mapped = state.mode === "mapped";
+    const t = TENOS[state.tenos];
+    const rolls = rollsPerChest(iqPct, t.cap);
+    const r = (irPct / 100) * t.rmul;
+    const sc = [0, 1, 2, 3, 4].map(i => poolScale(i, r, mapped));
+    let om = 0, my = 0;
+    for (const w of CHESTS) {
+      let z = w[0] * sc[0] + w[1] * sc[1] + w[2] * sc[2] + w[3] * sc[3];
+      if (mapped) z += MYTHIC_W * sc[4];
+      om += rolls * w[3] * sc[3] / z;
+      if (mapped) my += rolls * MYTHIC_W * sc[4] / z;
+    }
+    om = 1000 * om / CHESTS.length;
+    my = 1000 * my / CHESTS.length;
+    return { score: om + MYTHIC_MULT * my, omega: om, mythic: my, rolls };
+  }
+
+  const fmt = (v, d = 0) => v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pct = v => fmt(Math.round(v)) + "%";
+
+  function linspace(a, b, n) { const out = new Array(n); const st = (b - a) / (n - 1); for (let i = 0; i < n; i++) out[i] = a + st * i; return out; }
+
+  function buildGrid(n) {
+    const xs = linspace(state.iq[0], state.iq[1], n);
+    const ys = linspace(state.ir[0], state.ir[1], n);
+    const z = [], cd = [];
+    let lo = Infinity, hi = -Infinity;
+    for (const y of ys) {
+      const zr = [], cr = [];
+      for (const x of xs) {
+        const e = evaluate(x, y);
+        zr.push(e.score); cr.push([e.omega, MYTHIC_MULT * e.mythic, e.rolls]);
+        if (e.score < lo) lo = e.score;
+        if (e.score > hi) hi = e.score;
+      }
+      z.push(zr); cd.push(cr);
+    }
+    if (!(hi > lo)) hi = lo + 1;
+    return { xs, ys, z, cd, lo, hi };
+  }
+
+  const plotEl = document.getElementById("plot");
+  const font = { family: "Inter, system-ui, sans-serif", color: "#b9b8c6", size: 12 };
+  const hoverlabel = { bgcolor: "#13131a", bordercolor: "rgba(255,255,255,0.25)", font: { family: "Inter, system-ui, sans-serif", color: "#f2f1f6", size: 12.5 } };
+
+  function hoverTemplate() {
+    const head = "<b>%{z:,.0f}</b> rolls / 1000 chests<br>";
+    const split = state.mode === "mapped"
+      ? "<span style='color:#4ade80'>%{customdata[0]:,.0f} omega</span> + <span style='color:#c084fc'>%{customdata[1]:,.1f} (5 × mythic)</span><br>"
+      : "<span style='color:#4ade80'>%{customdata[0]:,.0f} omega</span> · no mythic pool<br>";
+    return head + split + "IQ %{x:,.0f}% · IR %{y:,.0f}%<br><span style='color:#7d7c8c'>%{customdata[2]:.1f} rolls per chest</span><extra></extra>";
+  }
+
+  function colorbar() {
+    return { title: { text: "score", side: "right", font: { size: 11, color: "#7d7c8c" } }, thickness: 12, len: 0.9, outlinewidth: 0, tickfont: { size: 11, color: "#b9b8c6" }, tickformat: ",.0f" };
+  }
+
+  function render() {
+    const is3d = state.view === "3d";
+    const g = buildGrid(is3d ? GRID_3D : GRID_2D);
+    const q = evaluate(state.q.iq, state.q.ir);
+    const inWin = state.q.iq >= state.iq[0] && state.q.iq <= state.iq[1] && state.q.ir >= state.ir[0] && state.q.ir <= state.ir[1];
+    const axTitle = (t) => ({ text: t, font: { size: 12, color: "#b9b8c6" } });
+    let data, layout;
+    if (!is3d) {
+      data = [{
+        type: "heatmap", x: g.xs, y: g.ys, z: g.z, customdata: g.cd, colorscale: COLORSCALE, zmin: g.lo, zmax: g.hi,
+        zsmooth: "best", hovertemplate: hoverTemplate(), colorbar: colorbar(),
+      }];
+      if (inWin) data.push({
+        type: "scatter", mode: "markers", x: [state.q.iq], y: [state.q.ir], hoverinfo: "skip", showlegend: false,
+        marker: { size: 13, color: "rgba(0,0,0,0)", line: { color: "#ffffff", width: 2.5 } },
+      });
+      layout = {
+        paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "#0d0d12", font, hoverlabel, dragmode: "pan",
+        margin: { l: 70, r: 20, t: 10, b: 52 },
+        xaxis: { title: axTitle("Item Quantity (%)"), range: [state.iq[0], state.iq[1]], gridcolor: "rgba(255,255,255,0.06)", zeroline: false, tickformat: ",.0f", ticksuffix: "%" },
+        yaxis: { title: axTitle("Item Rarity (%)"), range: [state.ir[0], state.ir[1]], gridcolor: "rgba(255,255,255,0.06)", zeroline: false, tickformat: ",.0f", ticksuffix: "%" },
+        uirevision: "2d",
+      };
+    } else {
+      data = [{
+        type: "surface", x: g.xs, y: g.ys, z: g.z, customdata: g.cd, colorscale: COLORSCALE, cmin: g.lo, cmax: g.hi,
+        hovertemplate: hoverTemplate(), colorbar: colorbar(),
+        contours: { z: { show: true, usecolormap: true, highlightcolor: "#ffffff", project: { z: false } } },
+        lighting: { ambient: 0.75, diffuse: 0.6, specular: 0.15, roughness: 0.8 },
+      }];
+      if (inWin) data.push({
+        type: "scatter3d", mode: "markers", x: [state.q.iq], y: [state.q.ir], z: [q.score], hoverinfo: "skip", showlegend: false,
+        marker: { size: 6, color: "#ffffff", line: { color: "#060608", width: 2 } },
+      });
+      const ax = (t) => ({ title: axTitle(t), backgroundcolor: "#0d0d12", gridcolor: "rgba(255,255,255,0.08)", zerolinecolor: "rgba(255,255,255,0.12)", showbackground: true, tickformat: ",.0f", tickfont: { size: 10.5 } });
+      layout = {
+        paper_bgcolor: "rgba(0,0,0,0)", font, hoverlabel, margin: { l: 0, r: 0, t: 0, b: 0 },
+        scene: {
+          xaxis: Object.assign(ax("IQ (%)"), { range: [state.iq[0], state.iq[1]] }),
+          yaxis: Object.assign(ax("IR (%)"), { range: [state.ir[0], state.ir[1]] }),
+          zaxis: Object.assign(ax("score"), { range: [g.lo, g.hi] }),
+          aspectmode: "manual", aspectratio: { x: 1, y: 1, z: 0.6 },
+          camera: { eye: { x: -1.55, y: -1.55, z: 0.95 } },
+        },
+        uirevision: "3d",
+      };
+    }
+    Plotly.react(plotEl, data, layout, { responsive: true, displaylogo: false, scrollZoom: !is3d, modeBarButtonsToRemove: ["select2d", "lasso2d", "toImage", "autoScale2d"] });
+
+    document.getElementById("plotTitle").innerHTML = `${state.mode === "mapped" ? "Mapped" : "Unmapped"} vaults <small>${TENOS[state.tenos].label} · colors span ${fmt(g.lo)}–${fmt(g.hi)} in this window</small>`;
+    document.getElementById("plotHint").textContent = is3d ? "Drag to rotate · scroll to zoom · hover for values" : "Drag to pan · scroll to zoom · click to set your stats";
+  }
+
+  function renderResult() {
+    const q = evaluate(state.q.iq, state.q.ir);
+    document.getElementById("rScore").textContent = fmt(q.score);
+    const split = document.getElementById("rSplit");
+    if (state.mode === "mapped") {
+      split.innerHTML = `(<span class="omega" title="${fmt(q.omega, 1)} omega rolls per 1000 chests">${fmt(q.omega)}</span> + <span class="mythic" title="5 × ${fmt(q.mythic, 2)} mythic rolls per 1000 chests">${fmt(MYTHIC_MULT * q.mythic)}</span>)`;
+      document.getElementById("rSub").textContent = "omega (green) + 5 × mythic (purple) per 1000 chests";
+    } else {
+      split.innerHTML = `(<span class="omega">${fmt(q.omega)}</span> omega · no mythic pool)`;
+      document.getElementById("rSub").textContent = "omega rolls per 1000 unmapped chests";
+    }
+    const capped = q.rolls >= TENOS[state.tenos].cap - 1e-9;
+    document.getElementById("rMeta").innerHTML =
+      `<span><em>rolls/chest</em> ${fmt(q.rolls, 1)}${capped ? " (capped)" : ""}</span>` +
+      (state.mode === "mapped" ? `<span><em>mythic/1000</em> ${fmt(q.mythic, 2)}</span>` : "");
+  }
+
+  let raf = 0;
+  function schedule(full = true) {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; renderResult(); if (full) render(); });
+  }
+
+  function setupRange(id, key, valId) {
+    const root = document.getElementById(id);
+    const [a, b] = root.querySelectorAll("input");
+    const fill = root.querySelector(".fill");
+    const MIN_GAP = 100;
+    const paint = () => {
+      a.value = state[key][0]; b.value = state[key][1];
+      fill.style.left = (100 * state[key][0] / AX_MAX) + "%";
+      fill.style.width = (100 * (state[key][1] - state[key][0]) / AX_MAX) + "%";
+      document.getElementById(valId).textContent = `${pct(state[key][0])} – ${pct(state[key][1])}`;
+    };
+    const onInput = (which) => {
+      let lo = +a.value, hi = +b.value;
+      if (hi - lo < MIN_GAP) { if (which === 0) lo = hi - MIN_GAP; else hi = lo + MIN_GAP; }
+      lo = Math.max(0, lo); hi = Math.min(AX_MAX, Math.max(hi, lo + MIN_GAP));
+      state[key] = [lo, hi];
+      paint(); schedule();
+    };
+    a.addEventListener("input", () => onInput(0));
+    b.addEventListener("input", () => onInput(1));
+    root.addEventListener("pointerdown", (ev) => {
+      const rect = root.getBoundingClientRect();
+      const v = AX_MAX * (ev.clientX - rect.left) / rect.width;
+      const closerToHi = Math.abs(v - state[key][1]) < Math.abs(v - state[key][0]);
+      a.style.zIndex = closerToHi ? 1 : 2; b.style.zIndex = closerToHi ? 2 : 1;
+    });
+    return paint;
+  }
+  const paintIQ = setupRange("iqRange", "iq", "iqVal");
+  const paintIR = setupRange("irRange", "ir", "irVal");
+  paintIQ(); paintIR();
+
+  document.querySelectorAll(".presets").forEach(p => p.addEventListener("click", (ev) => {
+    const btn = ev.target.closest("button"); if (!btn) return;
+    const [lo, hi] = btn.dataset.r.split(",").map(Number);
+    state[p.dataset.axis] = [lo, hi];
+    (p.dataset.axis === "iq" ? paintIQ : paintIR)(); schedule();
+  }));
+
+  function bindSeg(id, attr, key) {
+    const seg = document.getElementById(id);
+    seg.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("button"); if (!btn) return;
+      state[key] = btn.dataset[attr];
+      seg.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      schedule();
+    });
+  }
+  bindSeg("viewSeg", "v", "view");
+  bindSeg("modeSeg", "m", "mode");
+  bindSeg("tenosSeg", "t", "tenos");
+
+  const qIQ = document.getElementById("qIQ"), qIR = document.getElementById("qIR");
+  const readQuery = () => {
+    const clamp = v => Math.min(AX_MAX, Math.max(0, Number.isFinite(v) ? v : 0));
+    state.q = { iq: clamp(parseFloat(qIQ.value)), ir: clamp(parseFloat(qIR.value)) };
+    schedule();
+  };
+  qIQ.addEventListener("input", readQuery);
+  qIR.addEventListener("input", readQuery);
+
+  function wirePlotEvents() {
+    plotEl.on("plotly_click", (ev) => {
+      if (state.view !== "2d" || !ev.points || !ev.points.length) return;
+      const p = ev.points[0];
+      state.q = { iq: Math.round(p.x / 10) * 10, ir: Math.round(p.y / 10) * 10 };
+      qIQ.value = state.q.iq; qIR.value = state.q.ir;
+      schedule();
+    });
+    plotEl.on("plotly_relayout", (ev) => {
+      if (state.view !== "2d") return;
+      const x0 = ev["xaxis.range[0]"], x1 = ev["xaxis.range[1]"], y0 = ev["yaxis.range[0]"], y1 = ev["yaxis.range[1]"];
+      if (x0 === undefined && y0 === undefined) return;
+      const fit = (lo, hi) => {
+        let a = Math.max(0, Math.round(lo / 50) * 50), b = Math.min(AX_MAX, Math.round(hi / 50) * 50);
+        if (b - a < 100) b = Math.min(AX_MAX, a + 100), a = b - 100;
+        return [a, b];
+      };
+      if (x0 !== undefined) state.iq = fit(x0, x1);
+      if (y0 !== undefined) state.ir = fit(y0, y1);
+      paintIQ(); paintIR(); schedule();
+    });
+  }
+
+  renderResult();
+  render();
+  wirePlotEvents();
+})();
+</script>
+</body>
+</html>
